@@ -1,0 +1,13 @@
+#!/bin/bash 
+#BSUB -q short-serial 
+#BSUB -o intercomparison_W_hrly.out 
+#BSUB -e intercomparison_W_hrly.err 
+#BSUB -W 06:00
+
+ls
+pwd
+
+source activate ACPC_intercomparison
+python I_W_hrly.py
+
+
