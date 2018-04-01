@@ -1,10 +1,10 @@
 from collections import OrderedDict,defaultdict
 f = lambda: defaultdict(f) 
 
-from load_models_PJM.load_WRF import load_WRF
-from load_models_PJM.load_RAMS import load_RAMS
+from load_models.load_WRF import load_WRF
+from load_models.load_RAMS import load_RAMS
 from load_models.load_COSMO import load_COSMO
-from load_models.load_UM import load_UM 
+from load_models.load_UM import load_UM
 #from load_models_PJM.load_UM import load_UM_hrly
 
 
