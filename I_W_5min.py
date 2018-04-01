@@ -25,133 +25,11 @@ from Setup_intercomparison import load_variable_cube,color,variable_names,direct
 from collections import defaultdict, OrderedDict
 f = lambda: defaultdict(f) 
 
-#import sys
-#sys.path.append("/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/wrfcube")
-#sys.path.append("/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/ramscube")
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning, append=True)
+warnings.filterwarnings('ignore', category=RuntimeWarning, append=True)
+warnings.filterwarnings('ignore', category=FutureWarning, append=True)
 
-# from load_models_PJM.load_WRF import load_WRF
-# from load_models_PJM.load_RAMS import load_RAMS
-# from load_models_PJM.load_COSMO import load_COSMO
-# from load_models_PJM.load_UM import load_UM
-# from plot_functions.plot_functions import plot_2D_map
-
-######################################################    
-############## Specify models, filenames, paths, etc..
-######################################################
-# Specify which load module to use for each model
-# load_variable_cube=OrderedDict()
-# load_variable_cube['WRF_OXF']=load_WRF
-# load_variable_cube['WRF_NASA']=load_WRF
-# load_variable_cube['WRF_HIJU']=load_WRF
-# load_variable_cube['RAMS_CSU']=load_RAMS
-# load_variable_cube['COSMO_KIT']=load_COSMO
-# load_variable_cube['UM_LEEDS']=load_UM
-
-# # Specify colors for the models
-# color=OrderedDict()
-# color['WRF_OXF']='#002147'
-# color['WRF_HIJU']='#77d8d8'
-# color['WRF_NASA']='#0B3D91'
-# color['RAMS_CSU']='#1E4D2B'
-# color['COSMO_KIT']='#009682'
-# color['UM_LEEDS']='#b31b1b'
-
-# variable_names=OrderedDict()
-# variable_names['WRF_OXF']=OrderedDict()
-# variable_names['WRF_NASA']=OrderedDict()
-# variable_names['WRF_HIJU']=OrderedDict()
-# variable_names['RAMS_CSU']=OrderedDict()
-# variable_names['COSMO_KIT']=OrderedDict()
-# variable_names['UM_LEEDS']=OrderedDict()
-
-# new_varnames = ('QCLD','QRAIN','QICE','QSNOW','QGRA','QDRI','QAGG','QHAIL')
-
-# # Specify variable name and unique variable id for each model
-# new_varname = 'W'
-# variable_names['WRF_OXF'][new_varname]='W'
-# variable_names['RAMS_CSU'][new_varname]='WC'
-# variable_names['COSMO_KIT'][new_varname]='upward_air_velocity'
-# variable_names['UM_LEEDS'][new_varname]='w'
-# #variable_names['WRF_NASA'][new_varname]='W'
-
-# new_varname = 'QCLD'
-# variable_names['WRF_OXF'][new_varname]='QCLOUD'
-# variable_names['RAMS_CSU'][new_varname]='RCP'
-# variable_names['COSMO_KIT'][new_varname]='mass_fraction_of_cloud_liquid_water_in_air'
-# variable_names['UM_LEEDS'][new_varname]='qc'
-# #variable_names['WRF_NASA'][new_varname]='QCLOUD'
-
-# new_varname = 'QRAIN'
-# variable_names['WRF_OXF'][new_varname]='QRAIN'
-# variable_names['RAMS_CSU'][new_varname]='RRP'
-# variable_names['COSMO_KIT'][new_varname]='mass_fraction_of_rain_in_air'
-# variable_names['UM_LEEDS'][new_varname]='qr'
-# #variable_names['WRF_NASA'][new_varname]='QRAIN'
-
-
-# new_varname = 'QDRI' # Only RAMS has DRIZZLE
-# #variable_names['WRF_OXF'][new_varname]=''
-# variable_names['RAMS_CSU'][new_varname]='RDP'
-# #variable_names['COSMO_KIT'][new_varname]=''
-# #variable_names['UM_LEEDS'][new_varname]=''
-# #variable_names['WRF_NASA'][new_varname]=''
-
-# new_varname = 'QICE'
-# variable_names['WRF_OXF'][new_varname]='QICE'
-# variable_names['RAMS_CSU'][new_varname]='RPP'
-# variable_names['COSMO_KIT'][new_varname]='mass_fraction_of_cloud_ice_in_air'
-# variable_names['UM_LEEDS'][new_varname]='qi'
-# #variable_names['WRF_NASA'][new_varname]='QICE'
-
-# new_varname = 'QSNOW'
-# variable_names['WRF_OXF'][new_varname]='QSNOW'
-# variable_names['RAMS_CSU'][new_varname]='RSP'
-# variable_names['COSMO_KIT'][new_varname]='mass_fraction_of_snow_in_air'
-# variable_names['UM_LEEDS'][new_varname]='qs'
-# #variable_names['WRF_NASA'][new_varname]='QSNOW'
-
-# new_varname = 'QAGG' # Only RAMS has aggregate category
-# #variable_names['WRF_OXF'][new_varname]=''
-# variable_names['RAMS_CSU'][new_varname]='RAP'
-# #variable_names['COSMO_KIT'][new_varname]=''
-# #variable_names['UM_LEEDS'][new_varname]=''
-# #variable_names['WRF_NASA'][new_varname]=''
-
-# new_varname = 'QGRA'  
-# variable_names['WRF_OXF'][new_varname]='QGRAUP'
-# variable_names['RAMS_CSU'][new_varname]='RGP'
-# variable_names['COSMO_KIT'][new_varname]='mass_fraction_of_graupel_in_air'
-# variable_names['UM_LEEDS'][new_varname]='qg'
-# #variable_names['WRF_NASA'][new_varname]='QGRAUP'
-
-# new_varname = 'QHAIL' # Only RAMS has Hail category
-# #variable_names['WRF_OXF'][new_varname]=''
-# variable_names['RAMS_CSU'][new_varname]='RHP'
-# #variable_names['COSMO_KIT'][new_varname]=''
-# #variable_names['UM_LEEDS'][new_varname]=''
-# #variable_names['WRF_NASA'][new_varname]=''
-
-
-# filename_500m=OrderedDict()
-# filename_500m['WRF_OXF']="wrfout_d03*"
-# filename_500m['RAMS_CSU']="a-A*-g3.h5"
-# filename_500m['COSMO_KIT']="lfff*0000.nc_5min"
-# filename_500m['UM_LEEDS']="*201306*.nc"
-# #filename_500m['WRF_NASA']="wrfout_d03*"
-
-# directory_CLN_500m_5min=OrderedDict()
-# directory_CLN_500m_5min['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/CLN/WRF_ACPC_201306191800_1h1h5min_CLN/d03"
-# directory_CLN_500m_5min['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/CLN/x.out.5m"
-# directory_CLN_500m_5min['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m"
-# directory_CLN_500m_5min['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/CLN/0p5km_5m"
-# #directory_CLN_500m_5min['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/P3_CLN"
-
-# directory_POL_500m_5min=OrderedDict()
-# directory_POL_500m_5min['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/POL/WRF_ACPC_201306191800_1h1h5min_POL/d03"
-# directory_POL_500m_5min['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/POL/x.out.5m"
-# directory_POL_500m_5min['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m"
-# directory_POL_500m_5min['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/POL/0p5km_5m"
-# #directory_POL_500m_5min['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/P3_POL"
 
 models=[]
 models.append('WRF_OXF')
@@ -162,24 +40,6 @@ models.append('WRF_NASA')
 
 savename = 'G3_5m_'
 
-#########################################################################    
-# Get filename paths for all the data
-# files_CLN_500m_5min=OrderedDict(); files_POL_500m_5min=OrderedDict()
-# for model in models:
-#     print(os.path.join(directory_CLN_500m_5min[model],filename_500m[model]))
-#     files_CLN_500m_5min[model]=glob.glob(os.path.join(directory_CLN_500m_5min[model],filename_500m[model]))
-#     print(os.path.join(directory_CLN_500m_5min[model],filename_500m[model]))
-#     files_POL_500m_5min[model]=glob.glob(os.path.join(directory_POL_500m_5min[model],filename_500m[model]))
-       
-# #########################################################################    
-# ############## Load W data for each model, using specified load module
-# #########################################################################   
-# MV_CLN=OrderedDict()
-# MV_POL=OrderedDict()
-# for model in models:
-#     print(model,files_CLN_500m_5min[model])
-#     MV_CLN[model]=load_variable_cube[model](files_CLN_500m_5min[model],variable_names[model]['W'])
-#     MV_POL[model]=load_variable_cube[model](files_POL_500m_5min[model],variable_names[model]['W'])
     
     # Get filename paths for all the data
 files_CLN_500m_5min=OrderedDict(); files_POL_500m_5min=OrderedDict()

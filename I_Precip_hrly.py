@@ -25,6 +25,12 @@ from collections import defaultdict, OrderedDict
 f = lambda: defaultdict(f) 
 
 
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning, append=True)
+warnings.filterwarnings('ignore', category=RuntimeWarning, append=True)
+warnings.filterwarnings('ignore', category=FutureWarning, append=True)
+
+
 # For PJM Local Testing
 #import sys
 #sys.path.append("/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/wrfcube")
@@ -109,9 +115,9 @@ savename = 'G3_hrly_'
 # Get filename paths for all the data
 files_CLN_500m_5min=OrderedDict(); files_POL_500m_5min=OrderedDict()
 for model in models:
-    # print(os.path.join(directory['CLN']['500m']['5min'][model],filename['500m'][model]))
+    print(os.path.join(directory['CLN']['500m']['5m'][model],filename['500m'][model]))
     files_CLN_500m_5min[model]=glob.glob(os.path.join(directory['CLN']['500m']['1h'][model],filename['500m'][model]))
-    # print(os.path.join(directory['POL']['500m']['5min'][model],filename['500m'][model]))
+    print(os.path.join(directory['POL']['500m']['5m'][model],filename['500m'][model]))
     files_POL_500m_5min[model]=glob.glob(os.path.join(directory['POL']['500m']['1h'][model],filename['500m'][model]))
        
 #########################################################################    

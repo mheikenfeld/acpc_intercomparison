@@ -20,10 +20,10 @@ warnings.filterwarnings('ignore', category=FutureWarning, append=True)
 
 models=[]
 models.append('WRF_OXF')
-#models.append('RAMS_CSU')
+models.append('RAMS_CSU')
 models.append('COSMO_KIT')
 models.append('UM_LEEDS')
-#models.append('WRF_NASA')
+models.append('WRF_NASA')
 
 cases=['CLN','POL']
 

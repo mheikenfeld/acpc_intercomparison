@@ -24,76 +24,14 @@ import matplotlib.dates as mdates
 from Setup_intercomparison import load_variable_cube,color,variable_names,directory,filename
 from collections import defaultdict, OrderedDict
 f = lambda: defaultdict(f) 
+
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning, append=True)
+warnings.filterwarnings('ignore', category=RuntimeWarning, append=True)
+warnings.filterwarnings('ignore', category=FutureWarning, append=True)
+
+
 # from plot_functions.plot_functions import plot_2D_map
-
-# For PJM Local Testing
-#import sys
-#sys.path.append("/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/wrfcube")
-#sys.path.append("/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/ramscube")
-
-# from load_models_PJM.load_WRF import load_WRF
-# from load_models_PJM.load_RAMS import load_RAMS
-# from load_models_PJM.load_COSMO import load_COSMO
-# from load_models_PJM.load_UM import load_UM
-
-######################################################    
-############## Specify models, filenames, paths, etc..
-######################################################
-# Specify which load module to use for each model
-# load_variable_cube=OrderedDict()
-# load_variable_cube['WRF_OXF']=load_WRF
-# load_variable_cube['WRF_NASA']=load_WRF
-# load_variable_cube['WRF_HIJU']=load_WRF
-# load_variable_cube['RAMS_CSU']=load_RAMS
-# load_variable_cube['COSMO_KIT']=load_COSMO
-# load_variable_cube['UM_LEEDS']=load_UM
-
-# Specify colors for the models
-# color=OrderedDict()
-# color['WRF_OXF']='#002147'
-# color['WRF_HIJU']='#77d8d8'
-# color['WRF_NASA']='#0B3D91'
-# color['RAMS_CSU']='#1E4D2B'
-# color['COSMO_KIT']='#009682'
-# color['UM_LEEDS']='#b31b1b'
-
-# variable_names=OrderedDict()
-# variable_names['WRF_OXF']=OrderedDict()
-# variable_names['WRF_NASA']=OrderedDict()
-# variable_names['WRF_HIJU']=OrderedDict()
-# variable_names['RAMS_CSU']=OrderedDict()
-# variable_names['COSMO_KIT']=OrderedDict()
-# variable_names['UM_LEEDS']=OrderedDict()
-
-# Specify variable name and unique variable id for each model
-# new_varname = 'AccumPrecip'
-# variable_names['WRF_OXF'][new_varname]='RAINNC'
-# variable_names['RAMS_CSU'][new_varname]='ACCPR'
-# variable_names['COSMO_KIT'][new_varname]='precipitation_amount'
-# variable_names['UM_LEEDS'][new_varname]='pcp_accum'
-# variable_names['WRF_NASA'][new_varname]='RAINNC'
-
-
-# filename_500m=OrderedDict()
-# filename_500m['WRF_OXF']="wrfout_d03*"
-# filename_500m['RAMS_CSU']="a-A*-g3.h5"
-# filename_500m['COSMO_KIT']="lfff*0000.nc_5min"
-# filename_500m['UM_LEEDS']="*201306*.nc"
-# filename_500m['WRF_NASA']="wrfout_d03*"
-
-# directory_CLN_500m_5min=OrderedDict()
-# directory_CLN_500m_5min['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/CLN/WRF_ACPC_201306191800_1h1h5min_CLN/d03"
-# directory_CLN_500m_5min['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/CLN/x.out.5m"
-# directory_CLN_500m_5min['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m"
-# directory_CLN_500m_5min['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/CLN/0p5km_5m"
-# directory_CLN_500m_5min['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/P3_CLN"
-
-# directory_POL_500m_5min=OrderedDict()
-# directory_POL_500m_5min['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/POL/WRF_ACPC_201306191800_1h1h5min_POL/d03"
-# directory_POL_500m_5min['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/POL/x.out.5m"
-# directory_POL_500m_5min['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m"
-# directory_POL_500m_5min['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/POL/0p5km_5m"
-# directory_POL_500m_5min['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/P3_POL"
 
 models=[]
 models.append('WRF_OXF')
@@ -109,9 +47,12 @@ savename = 'G3_5m_'
 # Get filename paths for all the data
 files_CLN_500m_5min=OrderedDict(); files_POL_500m_5min=OrderedDict()
 for model in models:
-    # print(os.path.join(directory['CLN']['500m']['5min'][model],filename['500m'][model]))
+    print(model)
+    print(directory['CLN']['500m']['5m'][model])
+    print(filename['500m'][model])
+    print(os.path.join(directory['CLN']['500m']['5m'][model],filename['500m'][model]))
     files_CLN_500m_5min[model]=glob.glob(os.path.join(directory['CLN']['500m']['5m'][model],filename['500m'][model]))
-    # print(os.path.join(directory['POL']['500m']['5min'][model],filename['500m'][model]))
+    print(os.path.join(directory['POL']['500m']['5m'][model],filename['500m'][model]))
     files_POL_500m_5min[model]=glob.glob(os.path.join(directory['POL']['500m']['5m'][model],filename['500m'][model]))
        
 #########################################################################    
