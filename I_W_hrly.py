@@ -10,7 +10,7 @@ Created on Tue Jan 23 10:25:41 2018
 import numpy as np
 import glob
 import os
-from datetime import datetime
+import datetime
 # Import Python Libraries
 import iris.plot as iplt
 from iris.analysis import MEAN, MAX, SUM
@@ -54,7 +54,7 @@ for model in models:
 MV_CLN=OrderedDict()
 MV_POL=OrderedDict()
 for model in models:
-    print(model,files_CLN_500m_1h[model])
+    # print(model,files_CLN_500m_1h[model])
     MV_CLN[model]=load_variable_cube[model](files_CLN_500m_1h[model],variable_names[model]['W'])
     MV_POL[model]=load_variable_cube[model](files_POL_500m_1h[model],variable_names[model]['W'])
 
@@ -190,7 +190,6 @@ plt.close(fig1)
 ####### Plot Mean W Updraft Profile versus Time for all the models
 ####### Threshhold on W
 ##########################################################################
-import datetime
 init_date = datetime.datetime(1970, 1, 1, 0, 0, 0)
 
 for w_thresh in (0,1,3,5,7,10):
@@ -317,7 +316,6 @@ for w_thresh in (0,1,3,5,7,10):
 ####### Threshhold on W and TC
 ##########################################################################
 
-import datetime
 init_date = datetime.datetime(1970, 1, 1, 0, 0, 0)
 
 for w_thresh in (0,1,3,5,7,10):
@@ -444,7 +442,6 @@ for w_thresh in (0,1,3,5,7,10):
 ####### Plot Mean TC within Updraft Profile versus Time for all the models
 ####### Threshhold on W and TC
 ############################################################
-import datetime
 init_date = datetime.datetime(1970, 1, 1, 0, 0, 0)
 
 w_thresh = 3

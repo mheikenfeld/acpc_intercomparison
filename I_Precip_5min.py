@@ -10,7 +10,7 @@ Created on Tue Jan 23 10:25:41 2018
 import numpy as np
 import glob
 import os
-from datetime import datetime
+import datetime
 # Import Python Libraries
 import iris.plot as iplt
 from iris.analysis import MEAN, MAX, SUM
@@ -47,12 +47,9 @@ savename = 'G3_5m_'
 # Get filename paths for all the data
 files_CLN_500m_5min=OrderedDict(); files_POL_500m_5min=OrderedDict()
 for model in models:
-    print(model)
-    print(directory['CLN']['500m']['5m'][model])
-    print(filename['500m'][model])
-    print(os.path.join(directory['CLN']['500m']['5m'][model],filename['500m'][model]))
+    # print(os.path.join(directory['CLN']['500m']['5m'][model],filename['500m'][model]))
     files_CLN_500m_5min[model]=glob.glob(os.path.join(directory['CLN']['500m']['5m'][model],filename['500m'][model]))
-    print(os.path.join(directory['POL']['500m']['5m'][model],filename['500m'][model]))
+    # print(os.path.join(directory['POL']['500m']['5m'][model],filename['500m'][model]))
     files_POL_500m_5min[model]=glob.glob(os.path.join(directory['POL']['500m']['5m'][model],filename['500m'][model]))
        
 #########################################################################    
@@ -61,7 +58,7 @@ for model in models:
 MV_CLN=OrderedDict()
 MV_POL=OrderedDict()
 for model in models:
-    print(model,files_CLN_500m_5min[model])
+    # print(model,files_CLN_500m_5min[model])
     MV_CLN[model]=load_variable_cube[model](files_CLN_500m_5min[model],variable_names[model]['AccumPrecip'])
     MV_POL[model]=load_variable_cube[model](files_POL_500m_5min[model],variable_names[model]['AccumPrecip'])
 

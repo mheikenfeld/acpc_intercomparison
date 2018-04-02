@@ -10,7 +10,7 @@ Created on Tue Jan 23 10:25:41 2018
 import numpy as np
 import glob
 import os
-from datetime import datetime
+import datetime
 # Import Python Libraries
 import iris.plot as iplt
 from iris.analysis import MEAN, MAX, SUM
