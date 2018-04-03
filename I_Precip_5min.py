@@ -48,9 +48,9 @@ savename = 'G3_5m_'
 files_CLN_500m_5min=OrderedDict(); files_POL_500m_5min=OrderedDict()
 for model in models:
     # print(os.path.join(directory['CLN']['500m']['5m'][model],filename['500m'][model]))
-    files_CLN_500m_5min[model]=glob.glob(os.path.join(directory['CLN']['500m']['5m'][model],filename['500m'][model]))
+    files_CLN_500m_5min[model]=glob.glob(os.path.join(directory['CLN']['500m']['5m'][model],filename['500m']['5m'][model]))
     # print(os.path.join(directory['POL']['500m']['5m'][model],filename['500m'][model]))
-    files_POL_500m_5min[model]=glob.glob(os.path.join(directory['POL']['500m']['5m'][model],filename['500m'][model]))
+    files_POL_500m_5min[model]=glob.glob(os.path.join(directory['POL']['500m']['5m'][model],filename['500m']['5m'][model]))
        
 #########################################################################    
 ############## Load data for each model, using specified load module
@@ -72,11 +72,11 @@ for model,W_i in MV_CLN.items():
     if model == 'UM_LEEDS':
         W_i.data = np.cumsum(W_i.data, axis=0); # Make Cumulative Sum
         iplt.plot(W_i.coord('time'),
-           W_i.collapsed(('x','y'),SUM),
+           W_i.collapsed(('x','y'),MEAN),
            axes=ax1,color=color[model],linestyle='--',label=model+'_CLN')
     else:
         iplt.plot(W_i.coord('time'),
-           W_i.collapsed(('x','y'),SUM),
+           W_i.collapsed(('x','y'),MEAN),
            axes=ax1,color=color[model],linestyle='--',label=model+'_CLN')
 
     print('Accumulated Precip vs. Time calculated and plotted for',model)
@@ -85,11 +85,11 @@ for model,W_i in MV_POL.items():
     if model == 'UM_LEEDS':
         W_i.data = np.cumsum(W_i.data, axis=0); # Make Cumulative Sum
         iplt.plot(W_i.coord('time'),
-           W_i.collapsed(('x','y'),SUM),
+           W_i.collapsed(('x','y'),MEAN),
            axes=ax1,color=color[model],linestyle='-',label=model+'_POL')
     else:
         iplt.plot(W_i.coord('time'),
-           W_i.collapsed(('x','y'),SUM),
+           W_i.collapsed(('x','y'),MEAN),
            axes=ax1,color=color[model],linestyle='-',label=model+'_POL')
 
     print('Accumulated Precip vs. Time calculated and plotted for',model)
@@ -109,22 +109,21 @@ fig1.savefig(os.path.join('Plots','PCP',savename+'AccumPrecip'+'_Time.png'),dpi=
 # Since cum sum for UM_LEEDS was already done in the first plot, no need to do it again
 matplotlib.rcParams.update({'font.size': 14})
 fig1,ax1=plt.subplots(figsize=(7,5),nrows=1,ncols=1)
+    
+bins = [0.001,0.002,0.005,0.01,0.02,0.05,0.1,0.2,0.5,1,2,5,10,15,20,50,100]
 for model,W_i in MV_CLN.items():  
     
-    data = W_i.data; data = np.diff(data,axis=0)
+    data =  np.diff(W_i.data,axis=0)*60/5 #multipy to go to hourly rates
     data[data<0.001] = 0;
-    bins = [0.001,0.01,0.05,0.1,0.5,1,5,10,15,20,50,100]
-    h, bin_edges = np.histogram(data,bins)
+    h, bin_edges = np.histogram(data,bins,density=True)
     bin_mids = (bin_edges[0:len(bin_edges)-1]+bin_edges[1:])/2
-
     plt.plot(bin_mids,h,color=color[model],linestyle='--',label=model+'_CLN')
 
 for model,W_i in MV_POL.items():  
     
     data = W_i.data; data = np.diff(data,axis=0)
     data[data<0.001] = 0;
-    bins = [0.001,0.01,0.05,0.1,0.5,1,5,10,15,20,50,100]
-    h, bin_edges = np.histogram(data,bins)
+    h, bin_edges = np.histogram(data,bins,density=True)
     bin_mids = (bin_edges[0:len(bin_edges)-1]+bin_edges[1:])/2
 
     plt.plot(bin_mids,h,color=color[model],linestyle='-',label=model+'_POL')
@@ -132,7 +131,7 @@ for model,W_i in MV_POL.items():
 ax1.set_xscale('log')
 #ax1.set_yscale('log')
 ax1.set_xlabel('Hourly Precipitation Rate (kg m$^{-2}$ hr$^{-1}$)')
-ax1.set_ylabel('Number of Grid Points')
+ax1.set_ylabel('Frequency')
 ax1.legend()
 plt.tight_layout()
 plt.grid()

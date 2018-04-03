@@ -45,9 +45,9 @@ savename = 'G3_5m_'
 files_CLN_500m_5min=OrderedDict(); files_POL_500m_5min=OrderedDict()
 for model in models:
     # print(os.path.join(directory['CLN']['500m']['5min'][model],filename['500m'][model]))
-    files_CLN_500m_5min[model]=glob.glob(os.path.join(directory['CLN']['500m']['5m'][model],filename['500m'][model]))
+    files_CLN_500m_5min[model]=glob.glob(os.path.join(directory['CLN']['500m']['5m'][model],filename['500m']['5m'][model]))
     # print(os.path.join(directory['POL']['500m']['5min'][model],filename['500m'][model]))
-    files_POL_500m_5min[model]=glob.glob(os.path.join(directory['POL']['500m']['5m'][model],filename['500m'][model]))
+    files_POL_500m_5min[model]=glob.glob(os.path.join(directory['POL']['500m']['5m'][model],filename['500m']['5m'][model]))
        
 #########################################################################    
 ############## Load data for each model, using specified load module
@@ -126,7 +126,76 @@ for model,W_i in MV_CLN.items():
     plt.grid()
 
 os.makedirs('Plots/W',exist_ok=True)
-plt.savefig(os.path.join('Plots','W',savename+'W_prof.png'))
+plt.savefig(os.path.join('Plots','W',savename+'W_POL_prof.png'))
+plt.close(fig1)
+
+
+############################################################
+####### Plot Mean W Profile for entire simulation
+############################################################
+matplotlib.rcParams.update({'font.size': 14})
+fig1,ax1=plt.subplots(figsize=(6,4),nrows=1,ncols=1)
+cnt = 0
+for model,W_i in MV_POL.items():  
+    print('W vs. Height calculated and plotted for',model)
+    yaxis = W_i.coord('geopotential_height').points
+    data = W_i.collapsed(('x','y','time'),MEAN).data
+
+    plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model)
+    plt.ylim((0,15))
+    plt.legend()
+    plt.ylabel('Altitude (km)')
+    plt.xlabel('Mean Vertical Velocity (m/s)')
+    plt.grid()
+
+os.makedirs('Plots/W',exist_ok=True)
+plt.savefig(os.path.join('Plots','W',savename+'W_POL_prof.png'))
+plt.close(fig1)
+
+############################################################
+####### Plot Mean W Profile for entire simulation
+############################################################
+matplotlib.rcParams.update({'font.size': 14})
+fig1,ax1=plt.subplots(figsize=(6,4),nrows=1,ncols=1)
+cnt = 0
+for model,W_i in MV_POL.items():  
+    print('W vs. Height calculated and plotted for',model)
+    yaxis = W_i.coord('geopotential_height').points
+    data = W_i.collapsed(('x','y','time'),MEAN).data
+
+    plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model)
+    plt.ylim((0,15))
+    plt.legend()
+    plt.ylabel('Altitude (km)')
+    plt.xlabel('Mean Vertical Velocity (m/s)')
+    plt.grid()
+
+os.makedirs('Plots/W',exist_ok=True)
+plt.savefig(os.path.join('Plots','W',savename+'W_POL_prof.png'))
+plt.close(fig1)
+
+
+############################################################
+####### Plot Mean W Profile for entire simulation
+############################################################
+matplotlib.rcParams.update({'font.size': 14})
+fig1,ax1=plt.subplots(figsize=(6,4),nrows=1,ncols=1)
+cnt = 0
+for model,W_i in MV_POL.items():
+    print('W vs. Height calculated and plotted for',model)
+    yaxis = W_i.coord('geopotential_height').points
+    
+    data = MV_POL[model].collapsed(('x','y','time'),MEAN).data-MV_CLN[model].collapsed(('x','y','time'),MEAN).data
+
+    plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model)
+    plt.ylim((0,15))
+    plt.legend()
+    plt.ylabel('Altitude (km)')
+    plt.xlabel('Mean Vertical Velocity (m/s)')
+    plt.grid()
+
+os.makedirs('Plots/W',exist_ok=True)
+plt.savefig(os.path.join('Plots','W',savename+'W_Diff_prof.png'))
 plt.close(fig1)
 
 ##########################################################################
@@ -187,6 +256,65 @@ plt.tight_layout()
 os.makedirs('Plots/W',exist_ok=True)
 plt.savefig(os.path.join('Plots','W',savename+'W_prof_time_nothresh.png'))
 plt.close(fig1)
+
+############################################################
+####### Plot Mean Condensate Profile Liquid for entire simulation
+############################################################
+matplotlib.rcParams.update({'font.size': 14})
+fig1,ax1=plt.subplots(figsize=(6,4),nrows=1,ncols=1)
+cnt = 0
+for model,TCL_i in TCL_CLN.items():  
+    yaxis = TCL_i.coord('geopotential_height').points
+    data = TCL_i.collapsed(('x','y','time'),MEAN).data
+    plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model+' CLN')
+    
+for model,TCL_i in TCL_POL.items():  
+    yaxis = TCL_i.coord('geopotential_height').points
+    data = TCL_i.collapsed(('x','y','time'),MEAN).data
+    plt.plot(data,yaxis/1000,color=color[model],linestyle='-',label=model+' POL')
+    print('W vs. Height calculated and plotted for',model)
+
+plt.ylim((0,15))
+plt.legend()
+plt.ylabel('Altitude (km)')
+plt.xlabel('Mean Vertical Velocity (m/s)')
+plt.grid()
+
+os.makedirs('Plots/W',exist_ok=True)
+plt.savefig(os.path.join('Plots','W',savename+'TCL_prof.png'))
+plt.close(fig1)
+
+
+############################################################
+####### Plot Mean Condensate Profile Ice for entire simulation
+############################################################
+matplotlib.rcParams.update({'font.size': 14})
+fig1,ax1=plt.subplots(figsize=(6,4),nrows=1,ncols=1)
+cnt = 0
+for model,TCI_i in TCI_CLN.items():  
+    yaxis = TCI_i.coord('geopotential_height').points
+    data = TCI_i.collapsed(('x','y','time'),MEAN).data
+
+    plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model+' CLN')
+    
+for model,TCI_i in TCI_CLN.items():  
+    yaxis = TCI_i.coord('geopotential_height').points
+    data = TCI_i.collapsed(('x','y','time'),MEAN).data
+    plt.plot(data,yaxis/1000,color=color[model],linestyle='-',label=model+' POL')
+    print('W vs. Height calculated and plotted for',model)
+
+plt.ylim((0,15))
+plt.legend()
+plt.ylabel('Altitude (km)')
+plt.xlabel('Mean Vertical Velocity (m/s)')
+plt.grid()
+
+os.makedirs('Plots/W',exist_ok=True)
+plt.savefig(os.path.join('Plots','W',savename+'TCI_prof.png'))
+plt.close(fig1)
+
+
+
 
 ##########################################################################
 ####### Plot Mean W Updraft Profile versus Time for all the models
