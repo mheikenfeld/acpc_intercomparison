@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-def plot_2D_map(cube_in,axes_extent=None,title=None,axes=plt.gca(),vmin=None,vmax=None,n_levels=50,cmap='viridis',**kwargs):
+def plot_2D_map(cube_in,axes_extent=None,title=None,axes=plt.gca(),vmin=None,vmax=None,n_levels=50,cmap='viridis',colorbar=True,**kwargs):
     import cartopy
     from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
     import iris.plot as iplt
@@ -15,7 +15,7 @@ def plot_2D_map(cube_in,axes_extent=None,title=None,axes=plt.gca(),vmin=None,vma
     
     datestring=cube_in.coord('time').units.num2date(cube_in.coord('time').points[0]).strftime('%Y-%m-%d %H:%M:%S')
 
-    axes.set_title(str(title)+'    ' + datestring)
+    axes.set_title(str(title)+'    ' + datestring,fontsize=8)
     
     gl = axes.gridlines(draw_labels=True)
     majorLocator = MaxNLocator(nbins=5,steps=[1,2,5,10])
@@ -39,12 +39,12 @@ def plot_2D_map(cube_in,axes_extent=None,title=None,axes=plt.gca(),vmin=None,vma
     plot_cube=iplt.contourf(cube_in,coords=['longitude','latitude'],
                         levels=np.linspace(vmin,vmax,num=n_levels),axes=axes,cmap=cmap,vmin=vmin,vmax=vmax,extend='both',**kwargs)
     
-
-    cbar=plt.colorbar(plot_cube,orientation='horizontal',ax=axes)
-    cbar.ax.set_xlabel(cube_in.name()+ '(' + cube_in.units.symbol +')') 
-    tick_locator = ticker.MaxNLocator(nbins=5)
-    cbar.locator = tick_locator
-    cbar.update_ticks()
+    if colorbar==True:
+        cbar=plt.colorbar(plot_cube,orientation='vertical',ax=axes)
+        cbar.ax.set_xlabel(cube_in.name()+ '(' + cube_in.units.symbol +')') 
+        tick_locator = ticker.MaxNLocator(nbins=5)
+        cbar.locator = tick_locator
+        cbar.update_ticks()
     
-    return axes
+    return plot_cube
 
