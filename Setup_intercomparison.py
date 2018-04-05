@@ -52,7 +52,7 @@ variable_names['WRF_OXF'][new_varname]='OLR'
 variable_names['RAMS_CSU'][new_varname]='OLR'
 variable_names['COSMO_KIT'][new_varname]='THBT_RAD'
 variable_names['UM_LEEDS'][new_varname]='LWup_TOA'
-variable_names['WRF_NASA'][new_varname]='OLR'
+variable_names['WRF_NASA'][new_varname]='TLWUP'
 
 
 # Specify variable name and unique variable id for each model
@@ -152,6 +152,7 @@ filename['500m']['1h']['COSMO_KIT']="lfff*0000.nc"
 filename['500m']['1h']['UM_LEEDS']="*201306*.nc"
 filename['500m']['1h']['WRF_NASA']="wrfout_d03*"
 
+
 filename['500m']['5m']=OrderedDict()
 filename['500m']['5m']['WRF_OXF']="wrfout_d03*"
 filename['500m']['5m']['RAMS_CSU']="a-A*-g3.h5"
@@ -165,6 +166,30 @@ filename['500m']['1m']['RAMS_CSU']="a-A*-g3.h5"
 filename['500m']['1m']['COSMO_KIT']="lfff*0000.nc_1min"
 filename['500m']['1m']['UM_LEEDS']="*201306*.nc"
 filename['500m']['1m']['WRF_NASA']="wrfout_d03*"
+
+filename_test=defaultdict(f)
+filename_test['500m']['1h']=OrderedDict()
+filename_test['500m']['1h']['WRF_OXF']="wrfout_d03_2013-06-19_2[2-3]:*:00"
+filename_test['500m']['1h']['RAMS_CSU']="a-A-2013-06-19-2[2-3]0000-g3.h5"
+filename_test['500m']['1h']['COSMO_KIT']="lfff001[0-1]0000.nc"
+filename_test['500m']['1h']['UM_LEEDS']="*20130619_2[2-3]00.nc"
+filename_test['500m']['1h']['WRF_NASA']="wrfout_d03_2013-06-19_2[2-3]:00:00"
+
+filename_test['500m']['5m']=OrderedDict()
+filename_test['500m']['5m']['WRF_OXF']="wrfout_d03_2013-06-19_21:*:00"
+filename_test['500m']['5m']['RAMS_CSU']="a-A-2013-06-19-21*00-g3.h5"
+filename_test['500m']['5m']['COSMO_KIT']="lfff0009*00.nc"
+filename_test['500m']['5m']['UM_LEEDS']="*20130619_21*.nc"
+filename_test['500m']['5m']['WRF_NASA']="wrfout_d03_2013-06-19_21:*:00"
+
+
+filename_test['500m']['1m']=OrderedDict()
+filename_test['500m']['1m']['WRF_OXF']="wrfout_d03_2013-06-19_21:0*:00"
+filename_test['500m']['1m']['RAMS_CSU']="a-A-2013-06-19-210*00-g3.h5"
+filename_test['500m']['1m']['COSMO_KIT']="lfff00090*00.nc"
+filename_test['500m']['1m']['UM_LEEDS']="*20130619_210*.nc"
+filename_test['500m']['1m']['WRF_NASA']="wrfout_d03_2013-06-19_21:*:00"
+
 
 directory=defaultdict(f)
 
