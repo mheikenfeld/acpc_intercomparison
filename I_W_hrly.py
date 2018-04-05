@@ -41,6 +41,11 @@ models.append('UM_LEEDS')
 models.append('WRF_NASA')
 
 # Get filename paths for all the data
+######################################################    
+# use short subset of data files from each model for testing:
+#filename=filename_test
+
+
 files_CLN_500m_1h=OrderedDict(); files_POL_500m_1h=OrderedDict()
 for model in models:
     # print(os.path.join(directory['CLN']['500m']['1h'][model],filename['500m']['1h'][model]))
@@ -54,8 +59,8 @@ for model in models:
 MV_CLN=OrderedDict()
 MV_POL=OrderedDict()
 for model in models:
-    MV_CLN[model]=load_variable_cube[model](files_CLN_500m_1h[model],variable_names[model]['AccumPrecip'])
-    MV_POL[model]=load_variable_cube[model](files_POL_500m_1h[model],variable_names[model]['AccumPrecip'])
+    MV_CLN[model]=load_variable_cube[model](files_CLN_500m_1h[model],variable_names[model]['W'])
+    MV_POL[model]=load_variable_cube[model](files_POL_500m_1h[model],variable_names[model]['W'])
 
 
 

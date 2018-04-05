@@ -3,10 +3,10 @@ plt.switch_backend('agg')
 from Setup_intercomparison import load_variable_cube,color,variable_names,directory,filename
 from collections import defaultdict
 f = lambda: defaultdict(f) 
-
+from copy import deepcopy
 import iris
 import glob,os
-
+import numpy as np
 import datetime
 
 from plot_functions.plot_functions import plot_2D_map
@@ -34,13 +34,20 @@ for case in cases:
 
 
 Precip=defaultdict(f)
+Precip_accum=defaultdict(f)
+
 for case in cases:
     for model in models:
-        Precip[case][model]=load_variable_cube[model](files[case]['500m']['5m'][model],variable_names[model]['AccumPrecip'])
-        if model is not 'UM_LEEDS':
-            Precip[case][model].data[1:]=Precip[case][model][1:].core_data()-Precip[case][model][:-1].core_data()
+        if model is 'UM_LEEDS':
+            Precip[case][model]=load_variable_cube[model](files[case]['500m']['5m'][model],variable_names[model]['AccumPrecip'])
+            Precip_accum[case][model]=deepcopy(Precip[case][model])
+            for i in range(1,Precip_accum[case][model].coord('time').shape[0]):
+                Precip_accum[case][model][i].data=np.sum(Precip.core_data()[0:i],axis=0)
 
-        Precip[case][model]=Precip[case][model]*60/12
+        else:
+            Precip_accum[case][model]=load_variable_cube[model](files[case]['500m']['5m'][model],variable_names[model]['AccumPrecip'])
+            Precip[case][model]=deepcopy(Precip_accum[case][model])
+            Precip[case][model].data[1:]=Precip[case][model][1:].core_data()-Precip[case][model][:-1].core_data()
 
 
 os.makedirs('Plots/Precip_Maps',exist_ok=True)
@@ -65,8 +72,8 @@ for case in cases:
             Precip_i=Precip[case][model].extract(constraint_time)
             print(model,Precip_i)
             if Precip_i is not None:
-                plot_Precip_subplot=plot_2D_map(Precip_i,title=model,axes_extent=axes_extent,axes=ax3_flat[i],vmin=vmin,vmax=vmax,n_levels=50,colormap=False,cmap='Blues')
-                plot_2D_map(Precip_i,title=model,axes_extent=axes_extent,axes=ax4,vmin=vmin,vmax=vmax,n_levels=50,colormap=True,cmap='Blues')
+                plot_Precip_subplot=plot_2D_map(Precip_i,title=model,axes_extent=axes_extent,axes=ax3_flat[i],vmin=vmin,vmax=vmax,n_levels=50,colorbar=False,cmap='Blues')
+                plot_2D_map(Precip_i,title=model,axes_extent=axes_extent,axes=ax4,vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,cmap='Blues')
                 fig4.savefig(os.path.join('Plots','Precip_Maps_5min',case,model,'Precip_Maps'+time.strftime('%Y-%m-%d %H:%M:%S')+'.png'),dpi=600)
             plt.close(fig4)
         fig3.colorbar(plot_Precip_subplot,orientation='horizontal')

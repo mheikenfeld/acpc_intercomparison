@@ -127,7 +127,7 @@ for model,W_i in MV_CLN.items():
     
     data = W_i.data; data = np.diff(data,axis=0)
     data[data<0.001] = 0;
-    h, bin_edges = np.histogram(data,bins,density=True)
+    h, bin_edges = np.histogram(data,bins,density=False)
     bin_mids = (bin_edges[0:len(bin_edges)-1]+bin_edges[1:])/2
 
     plt.plot(bin_mids,h,color=color[model],linestyle='--',label=model+'_CLN')
@@ -136,21 +136,63 @@ for model,W_i in MV_POL.items():
     
     data = W_i.data; data = np.diff(data,axis=0)
     data[data<0.001] = 0;
-    h, bin_edges = np.histogram(data,bins,density=True)
+    h, bin_edges = np.histogram(data,bins,density=False)
     bin_mids = (bin_edges[0:len(bin_edges)-1]+bin_edges[1:])/2
 
     plt.plot(bin_mids,h,color=color[model],linestyle='-',label=model+'_POL')
 
 ax1.set_xscale('log')
-ax1.set_yscale('log')
+# ax1.set_yscale('log')
 ax1.set_xlabel('Hourly Precipitation Rate (kg m$^{-2}$ hr$^{-1}$)')
-ax1.set_ylabel('Frequency')
+# ax1.set_ylabel('Frequency')
+ax1.set_ylabel('N of gridpoints')
 ax1.legend()
 plt.tight_layout()
 plt.grid()
 
 os.makedirs('Plots/PCP',exist_ok=True)
 fig1.savefig(os.path.join('Plots','PCP',savename+'AccumPrecip'+'_Hist.png'),dpi=600)
+
+
+# Plot Hourly Precipitation Rate Histograms difference
+matplotlib.rcParams.update({'font.size': 14})
+fig1,ax1=plt.subplots(figsize=(7,5),nrows=1,ncols=1)
+
+bins = [0.001,0.002,0.005,0.01,0.02,0.05,0.1,0.2,0.5,1,2,5,10,15,20,50,100]
+
+for i,model in enumerate(models):  
+    
+    data_CLN =  MV_CLN[model].data; data_CLN = np.diff(data_CLN,axis=0)
+    data[data<0.001] = 0;
+    h_CLN, bin_edges = np.histogram(data_CLN,bins,density=False)
+    
+    data_POL =  MV_POL[model].data; data_POL = np.diff(data_POL,axis=0)
+    data_POL[data_POL<0.001] = 0;
+    h_POL, bin_edges = np.histogram(data_POL,bins,density=False)
+
+    
+    
+    bin_mids = (bin_edges[0:len(bin_edges)-1]+bin_edges[1:])/2
+
+    plt.plot(bin_mids,(h_POL-h_CLN)/h_POL*100,color=color[model],linestyle='-',label=model+' POL-CLN')
+
+
+ax1.set_xscale('log')
+# ax1.set_yscale('log')
+ax1.set_xlabel('Hourly Precipitation Rate (kg m$^{-2}$ hr$^{-1}$)')
+ax1.set_ylabel('N of gridpoints (% difference)')
+ax1.set_ylim([-40,40])
+
+ax1.legend()
+plt.tight_layout()
+plt.grid()
+
+os.makedirs('Plots/PCP',exist_ok=True)
+fig1.savefig(os.path.join('Plots','PCP',savename+'Precip'+'_Hist_diff.png'),dpi=600)
+
+
+
+
 
 # Plot Maximum Precipitation Rate at each time
 # Precipitate Rate calculated as time differences in cumulative precipitation

@@ -14,23 +14,26 @@ import datetime
 # Import Python Libraries
 import iris.plot as iplt
 from iris.analysis import MEAN, MAX, SUM
-
+import iris
 import matplotlib
 matplotlib.pyplot.switch_backend('agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-from Setup_intercomparison import load_variable_cube,color,variable_names,directory,filename
+from copy import deepcopy
+
+from Setup_intercomparison import load_variable_cube,color,variable_names,directory,filename,filename_test
 from collections import defaultdict, OrderedDict
 f = lambda: defaultdict(f) 
 
+from dask.array.ma import masked_where
 import warnings
 warnings.filterwarnings('ignore', category=UserWarning, append=True)
 warnings.filterwarnings('ignore', category=RuntimeWarning, append=True)
 warnings.filterwarnings('ignore', category=FutureWarning, append=True)
 
 
-savename = 'G3_hrly_b'
+savename = 'G3_hrly_b4'
 
 
 models=[]
@@ -39,6 +42,9 @@ models.append('RAMS_CSU')
 models.append('COSMO_KIT')
 models.append('UM_LEEDS')
 models.append('WRF_NASA')
+
+# use short subset of data files from each model for testing:
+filename=filename_test
 
 # Get filename paths for all the data
 files_CLN_500m_1h=OrderedDict(); files_POL_500m_1h=OrderedDict()
@@ -51,66 +57,20 @@ for model in models:
 #########################################################################    
 ############## Load data for each model, using specified load module
 #########################################################################   
+# def time_interval(cell):
+#     """Returns true if the model level is between X and Y"""
+#     return datetime.datetime(2013,6,19,21,0,0) <= cell <= datetime.datetime(2013,6,19,23,0,0)
+
+# constraint_time=iris.Constraint(time=time_interval)
+
 MV_CLN=OrderedDict()
 MV_POL=OrderedDict()
 for model in models:
-    MV_CLN[model]=load_variable_cube[model](files_CLN_500m_1h[model],variable_names[model]['AccumPrecip'])
-    MV_POL[model]=load_variable_cube[model](files_POL_500m_1h[model],variable_names[model]['AccumPrecip'])
+    MV_CLN[model]=load_variable_cube[model](files_CLN_500m_1h[model],variable_names[model]['W'])
+    MV_POL[model]=load_variable_cube[model](files_POL_500m_1h[model],variable_names[model]['W'])
 
 
 
-#########################################################################    
-############## Load CONDENSATE data for each model, using specified load module
-#########################################################################   
-# COND_CLN=OrderedDict()
-# COND_POL=OrderedDict()
-
-# Hydrometeors = ('QCLD','QRAIN','QICE','QSNOW','QGRA','QDRI','QAGG','QHAIL')
-
-# for model in models:            
-    
-    
-#     if model == 'RAMS_CSU':
-#         for i in np.arange(0,len(Hydrometeors),1):
-#         # if i > 4: # RAMS has 3 additional hydrometeor variables, so they are accounted for here
-#                   # Probably better moving forward to move DRI with RAIN, AGG with SNOW, and HAIL with GRAUP in load module moving forward
-#                 # print(model,files_CLN_500m_1h[model])
-#             COND_CLN[model,i]=load_variable_cube[model](files_CLN_500m_1h[model],variable_names[model][Hydrometeors[i]])
-#             # print(model,files_CLN_500m_1h[model])
-#             COND_POL[model,i]=load_variable_cube[model](files_POL_500m_1h[model],variable_names[model][Hydrometeors[i]])            
-#     elif model == 'WRF_NASA':
-#         for i in np.arange(0,3):
-#             COND_CLN[model,i]=load_variable_cube[model](files_CLN_500m_1h[model],variable_names[model][Hydrometeors[i]])
-#                 # print(model,files_CLN_500m_1h[model])
-#             COND_POL[model,i]=load_variable_cube[model](files_POL_500m_1h[model],variable_names[model][Hydrometeors[i]])            
-#     elif model in ['WRF_OXF','COSMO_KIT','UM_LEEDS']:
-#         for i in np.arange(0,5):
-#             # print(model,files_CLN_500m_1h[model])
-#             COND_CLN[model,i]=load_variable_cube[model](files_CLN_500m_1h[model],variable_names[model][Hydrometeors[i]])
-#             # print(model,files_CLN_500m_1h[model])
-#             COND_POL[model,i]=load_variable_cube[model](files_POL_500m_1h[model],variable_names[model][Hydrometeors[i]])            
-            
-# TC_CLN=OrderedDict(); TCI_CLN = OrderedDict(); TCL_CLN = OrderedDict();
-# TC_POL=OrderedDict(); TCI_POL = OrderedDict(); TCL_POL = OrderedDict();
-# for model in models:
-#     if model == 'RAMS_CSU':
-#         TCL_CLN[model] = COND_CLN[model,0]+COND_CLN[model,1]+COND_CLN[model,5]
-#         TCL_POL[model] = COND_POL[model,0]+COND_POL[model,1]+COND_POL[model,5]
-#         TCI_CLN[model] = COND_CLN[model,2]+COND_CLN[model,3]+COND_CLN[model,4]+COND_CLN[model,6]+COND_CLN[model,7]
-#         TCI_POL[model] = COND_POL[model,2]+COND_POL[model,3]+COND_POL[model,4]+COND_POL[model,6]+COND_POL[model,7]
-#     if model == 'WRF_NASA':
-#         TCL_CLN[model] = COND_CLN[model,0]+COND_CLN[model,1]
-#         TCL_POL[model] = COND_POL[model,0]+COND_POL[model,1]
-#         TCI_CLN[model] = COND_CLN[model,2]
-#         TCI_POL[model] = COND_POL[model,2]
-#     elif model in ['WRF_OXF','COSMO_KIT','UM_LEEDS']:
-#         TCL_CLN[model] = COND_CLN[model,0]+COND_CLN[model,1]
-#         TCL_POL[model] = COND_POL[model,0]+COND_POL[model,1]
-#         TCI_CLN[model] = COND_CLN[model,2]+COND_CLN[model,3]+COND_CLN[model,4]
-#         TCI_POL[model] = COND_POL[model,2]+COND_POL[model,3]+COND_POL[model,4]
-        
-#     TC_CLN[model] = TCI_CLN[model]+TCL_CLN[model]
-#     TC_POL[model] = TCI_POL[model]+TCL_POL[model]       
 
 #########################################################################
 ####### PLOTTING
@@ -123,21 +83,63 @@ for model in models:
 matplotlib.rcParams.update({'font.size': 14})
 fig1,ax1=plt.subplots(figsize=(6,4),nrows=1,ncols=1)
 cnt = 0
-for model,W_i in MV_CLN.items():  
-    print('W vs. Height calculated and plotted for',model)
+for model,W_i in MV_CLN.items():
     yaxis = W_i.coord('geopotential_height').points
     data = W_i.collapsed(('x','y','time'),MEAN).data
-
-    plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model)
+    
+    plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model+ ' CLN')
     plt.ylim((0,15))
     plt.legend()
     plt.ylabel('Altitude (km)')
     plt.xlabel('Mean Vertical Velocity (m/s)')
     plt.grid()
+    print('W vs. Height calculated and plotted for',model)
+plt.tight_layout()
+
+for model,W_i in MV_POL.items():
+    yaxis = W_i.coord('geopotential_height').points
+    data = W_i.collapsed(('x','y','time'),MEAN).data
+    
+    plt.plot(data,yaxis/1000,color=color[model],linestyle='-',label=model+ ' POL')
+    plt.ylim((0,15))
+    plt.legend()
+    plt.ylabel('Altitude (km)')
+    plt.xlabel('Mean Vertical Velocity (m/s)')
+    plt.grid()
+    print('W vs. Height calculated and plotted for',model)
+plt.tight_layout()
+
 
 os.makedirs('Plots/W',exist_ok=True)
 plt.savefig(os.path.join('Plots','W',savename+'W_prof.png'))
 plt.close(fig1)
+
+
+
+############################################################
+####### Plot Mean W idff Profile for entire simulation
+############################################################
+matplotlib.rcParams.update({'font.size': 14})
+fig1,ax1=plt.subplots(figsize=(6,4),nrows=1,ncols=1)
+cnt = 0
+for i,model in enumerate(models):
+    yaxis = MV_POL[model].coord('geopotential_height').points
+    data = MV_POL[model].collapsed(('x','y','time'),MEAN).data -MV_CLN[model].collapsed(('x','y','time'),MEAN).data
+    
+    plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model+ 'POL- CLN')
+    plt.ylim((0,15))
+    plt.legend()
+    plt.ylabel('Altitude (km)')
+    plt.xlabel('Mean Vertical Velocity (m/s)')
+    plt.grid()
+    print('W vs. Height diff calculated and plotted for',model)
+plt.tight_layout()
+
+
+os.makedirs('Plots/W',exist_ok=True)
+plt.savefig(os.path.join('Plots','W',savename+'W_prof_diff.png'))
+plt.close(fig1)
+
 
 
 ############################################################
@@ -146,24 +148,49 @@ plt.close(fig1)
 
 for w_thresh in [1,2,5]:
     matplotlib.rcParams.update({'font.size': 14})
-    fig1,ax1=plt.subplots(figsize=(6,4),nrows=1,ncols=1)
-    cnt = 0
-    for model,W_i in MV_CLN.items():  
+    fig1,ax1=plt.subplots(figsize=(10,6),nrows=1,ncols=1)
+    fig2,ax2=plt.subplots(figsize=(10,6),nrows=1,ncols=1)
+
+    for i,model in enumerate(models):  
+        
+        yaxis = MV_CLN[model].coord('geopotential_height').points
+        CLN=deepcopy(MV_CLN[model])
+        CLN.data=masked_where(CLN.core_data()<w_thresh,CLN.core_data())
+        data_CLN = CLN.collapsed(('x','y','time'),MEAN).core_data()
+            
+        POL=deepcopy(MV_POL[model])
+        POL.data=masked_where(POL.core_data()<w_thresh,POL.core_data())
+        data_POL = POL.collapsed(('x','y','time'),MEAN).core_data()
+
+        ax1.plot(data_CLN,yaxis/1000,color=color[model],linestyle='--',label=model+ ' CLN')
+        ax1.plot(data_POL,yaxis/1000,color=color[model],linestyle='--',label=model+ ' POL')
+        
+        ax2.plot(data_POL-data_CLN,yaxis/1000,color=color[model],linestyle='--',label=model+ ' POL-CLN')
+
         print('W vs. Height calculated and plotted for',model)
-        yaxis = W_i.coord('geopotential_height').points
-        W_i.data[W_i.data,w_thresh]= np.nan
-        data = W_i.collapsed(('x','y','time'),MEAN).data
+
+    ax1.set_ylim((0,15))
+    ax1.legend()
+    ax1.set_ylabel('Altitude (km)')
+    ax1.set_xlabel('Mean Vertical Velocity (m/s)')
+    plt.grid()
     
-        plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model)
-        plt.ylim((0,15))
-        plt.legend()
-        plt.ylabel('Altitude (km)')
-        plt.xlabel('Mean Vertical Velocity (m/s)')
-        plt.grid()
-    
+    ax2.set_ylim((0,15))
+    ax2.legend()
+    ax2.set_ylabel('Altitude (km)')
+    ax2.set_xlabel('Mean Vertical Velocity (m/s)')
+    plt.grid()
+        
+    plt.tight_layout()
     os.makedirs('Plots/W',exist_ok=True)
-    plt.savefig(os.path.join('Plots','W',savename+'W_prof_threshold_'+ str(w_thresh)+'.png'))
+    fig1.savefig(os.path.join('Plots','W',savename+'W_prof_threshold_'+ str(w_thresh)+'.png'))
+    fig1.savefig(os.path.join('Plots','W',savename+'W_prof_diff_threshold_'+ str(w_thresh)+'.png'))
+
     plt.close(fig1)
+    plt.close(fig2)
+
+    
+    
 
 # ##########################################################################
 # ####### Plot Mean W Profile versus Time for all the models

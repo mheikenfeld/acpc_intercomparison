@@ -40,9 +40,12 @@ models.append('COSMO_KIT')
 models.append('UM_LEEDS')
 models.append('WRF_NASA')
 
+
 savename = 'G3_5m_'
 
 ######################################################    
+# use short subset of data files from each model for testing:
+#filename=filename_test
 
 # Get filename paths for all the data
 files_CLN_500m_5min=OrderedDict(); files_POL_500m_5min=OrderedDict()

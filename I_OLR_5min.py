@@ -21,26 +21,26 @@ models=[]
 models.append('WRF_OXF')
 models.append('RAMS_CSU')
 models.append('COSMO_KIT')
-# models.append('UM_LEEDS')
-models.append('WRF_NASA')
+models.append('UM_LEEDS')
+# models.append('WRF_NASA')
 
 cases=['CLN','POL']
+
+# Get filename paths for all the data
+######################################################    
+# use short subset of data files from each model for testing:
+#filename=filename_test
 
 files=defaultdict(f)
 
 for case in cases:
     for model in models:
-        # print(case)
-        # print(model)
-        # print(directory[case]['500m']['5m'][model])
-        # print(filename['5m']['500m'][model])
         files[case]['500m']['5m'][model]=glob.glob(os.path.join(directory[case]['500m']['5m'][model],filename['500m']['5m'][model]))
 
 
 OLR=defaultdict(f)
 for case in cases:
     for model in models:
-        # print(model,files[case]['500m']['5m'][model])
         OLR[case][model]=load_variable_cube[model](files[case]['500m']['5m'][model],variable_names[model]['OLR'])
 
 print('OLR data loaded into cubes')
@@ -72,12 +72,13 @@ for case in cases:
             fig4,ax4=plt.subplots(nrows=1,ncols=1,figsize=(10/2.54,10/2.54),subplot_kw={'projection': ccrs.PlateCarree()})
             os.makedirs(os.path.join('Plots','OLR_Maps_5min',case,model),exist_ok=True)
             OLR_i=OLR[case][model].extract(constraint_time)
+            if model in ['COSMO_KIT','WRF_NASA']:
+                OLR_i=-1*OLR_i
             if OLR_i is not None:
-                plot_OLR_subplot=plot_2D_map(OLR_i,title=model,axes_extent=axes_extent,axes=ax3_flat[i],vmin=vmin,vmax=vmax,n_levels=50,colormap=False,cmap='Blues')
-                plot_2D_map(OLR_i,title=model,axes_extent=axes_extent,axes=ax4,vmin=vmin,vmax=vmax,n_levels=50,colormap=True,cmap='Blues')
+                plot_OLR_subplot=plot_2D_map(OLR_i,title=model,axes_extent=axes_extent,axes=ax3_flat[i],vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,colorbar_label=False,cmap='Blues')
+                plot_2D_map(OLR_i,title=model,axes_extent=axes_extent,axes=ax4,vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,colorbar_label=True,cmap='Blues')
                 fig4.savefig(os.path.join('Plots','OLR_Maps_5min',case,model,'OLR_'+time.strftime('%Y-%m-%d %H:%M:%S')+'.png'),dpi=600)
             plt.close(fig4)
-        fig3.colorbar(plot_OLR_subplot,orientation='horizontal',ax=ax4.ravel().tolist(), shrink=0.75)
         fig3.savefig(os.path.join('Plots','OLR_Maps_5min',case,'OLR_'+time.strftime('%Y-%m-%d %H:%M:%S')+'.png'),dpi=600)
         plt.close(fig3)
 print('done')

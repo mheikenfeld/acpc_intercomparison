@@ -26,6 +26,12 @@ models.append('WRF_NASA')
 
 cases=['CLN','POL']
 
+
+# Get filename paths for all the data
+######################################################    
+# use short subset of data files from each model for testing:
+#filename=filename_test
+
 files=defaultdict(f)
 
 for case in cases:
@@ -55,18 +61,19 @@ for case in cases:
     os.makedirs(os.path.join('Plots','OLR_Maps_hrly',case,'All'),exist_ok=True)
     for time in times:
         constraint_time=iris.Constraint(time=time)
-        fig3,ax3=plt.subplots(nrows=3,ncols=2,figsize=(30/2.54,20/2.54),squeeze=False,subplot_kw={'projection': ccrs.PlateCarree()})
+        fig3,ax3=plt.subplots(nrows=2,ncols=3,figsize=(30/2.54,20/2.54),squeeze=False,subplot_kw={'projection': ccrs.PlateCarree()})
         ax3_flat=ax3.flatten()
         for i,model in enumerate(models):
             fig4,ax4=plt.subplots(nrows=1,ncols=1,figsize=(10/2.54,10/2.54),subplot_kw={'projection': ccrs.PlateCarree()})
             os.makedirs(os.path.join('Plots','OLR_Maps_hrly',case,model),exist_ok=True)
-            OLR_i=OLR[case][model].extract(constraint_time)
+            OLR_i=OLR[case][model].extract(constraint_time)            
+            if model in ['COSMO_KIT','WRF_NASA']:
+                OLR_i=-1*OLR_i
             if OLR_i is not None:
-                plot_OLR_subplot=plot_2D_map(OLR_i,title=model,axes_extent=axes_extent,axes=ax3_flat[i],vmin=vmin,vmax=vmax,n_levels=50,colorbar=False,cmap='viridis')
-                plot_2D_map(OLR_i,title=model,axes_extent=axes_extent,axes=ax4,vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,cmap='viridis')
+                plot_OLR_subplot=plot_2D_map(OLR_i,title=model,axes_extent=axes_extent,axes=ax3_flat[i],vmin=vmin,vmax=vmax,n_levels=30,colorbar=True,colorbar_label=False,cmap='viridis')
+                plot_2D_map(OLR_i,title=model,axes_extent=axes_extent,axes=ax4,vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,colorbar_label=True,cmap='viridis')
                 fig4.savefig(os.path.join('Plots','OLR_Maps_hrly',case,model,'OLR_Maps'+time.strftime('%Y-%m-%d %H:%M:%S')+'.png'),dpi=600)
             plt.close(fig4)
-        fig3.colorbar(plot_OLR_subplot,orientation='horizontal')
         fig3.savefig(os.path.join('Plots','OLR_Maps_hrly',case,'OLR_Maps'+time.strftime('%Y-%m-%d %H:%M:%S')+'.png'),dpi=600)
         plt.close(fig3)
 
