@@ -26,12 +26,6 @@ models.append('WRF_NASA')
 
 cases=['CLN','POL']
 
-
-# Get filename paths for all the data
-######################################################    
-# use short subset of data files from each model for testing:
-#filename=filename_test
-
 files=defaultdict(f)
 
 for case in cases:

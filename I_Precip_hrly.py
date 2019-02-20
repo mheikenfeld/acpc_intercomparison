@@ -181,8 +181,6 @@ ax1.set_xscale('log')
 # ax1.set_yscale('log')
 ax1.set_xlabel('Hourly Precipitation Rate (kg m$^{-2}$ hr$^{-1}$)')
 ax1.set_ylabel('N of gridpoints (% difference)')
-ax1.set_ylim([-40,40])
-
 ax1.legend()
 plt.tight_layout()
 plt.grid()

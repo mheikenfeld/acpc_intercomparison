@@ -27,11 +27,6 @@ models.append('WRF_NASA')
 
 cases=['CLN','POL']
 
-# Get filename paths for all the data
-######################################################    
-# use short subset of data files from each model for testing:
-#filename=filename_test
-
 files=defaultdict(f)
 
 for case in cases:
@@ -86,15 +81,15 @@ for case in cases:
             fig4,ax4=plt.subplots(nrows=1,ncols=1,figsize=(10/2.54,10/2.54),subplot_kw={'projection': ccrs.PlateCarree()})
             os.makedirs(os.path.join('Plots','Precip_Maps_hrly',case,model),exist_ok=True)
             Precip_i=Precip[case][model].extract(constraint_time)
+            Stage4_i=Stage4.extract(constraint_time)
 
             if Precip_i is not None:
                 plot_Precip_subplot=plot_2D_map(Precip_i,title=model,axes_extent=axes_extent,axes=ax3_flat[i],vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,colorbar_label=False,cmap='Blues')
                 plot_2D_map(Precip_i,title=model,axes_extent=axes_extent,axes=ax4,vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,colorbar_label=False,cmap='Blues')
                 fig4.savefig(os.path.join('Plots','Precip_Maps_hrly',case,model,'Precip_Maps'+time.strftime('%Y-%m-%d %H:%M:%S')+'.png'),dpi=600)
             plt.close(fig4)
-        Stage4_i=Stage4.extract(constraint_time)
-        if Stage4_i is not None:
-             plot_Precip_subplot=plot_2D_map(Stage4_i,title='Stage4',axes_extent=axes_extent,axes=ax3_flat[5],vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,colorbar_label=False,cmap='Blues')
+            if Stage4_i is not None:
+                plot_Precip_subplot=plot_2D_map(Stage4_i,title='Stage4',axes_extent=axes_extent,axes=ax3_flat[5],vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,colorbar_label=False,cmap='Blues')
         fig3.savefig(os.path.join('Plots','Precip_Maps_hrly',case,'Precip_Maps'+time.strftime('%Y-%m-%d %H:%M:%S')+'.png'),dpi=600)
         plt.close(fig3)
         
@@ -112,15 +107,15 @@ for case in cases:
             fig4,ax4=plt.subplots(nrows=1,ncols=1,figsize=(10/2.54,10/2.54),subplot_kw={'projection': ccrs.PlateCarree()})
             os.makedirs(os.path.join('Plots','Precip_Maps_hrly_accum',case,model),exist_ok=True)
             Precip_i=Precip_accum[case][model].extract(constraint_time)
+            Stage4_i=Stage4_accum.extract(constraint_time)
 
             if Precip_i is not None:
                 plot_Precip_subplot=plot_2D_map(Precip_i,title=model,axes_extent=axes_extent,axes=ax3_flat[i],vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,colorbar_label=False,cmap='Blues')
                 plot_2D_map(Precip_i,title=model,axes_extent=axes_extent,axes=ax4,vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,colorbar_label=False,cmap='Blues')
                 fig4.savefig(os.path.join('Plots','Precip_Maps_hrly_accum',case,model,'Precip_Maps'+time.strftime('%Y-%m-%d %H:%M:%S')+'.png'),dpi=600)
             plt.close(fig4)
-        Stage4_i=Stage4_accum.extract(constraint_time)
-        if Stage4_i is not None:
-            plot_Precip_subplot=plot_2D_map(Stage4_i,title=model,axes_extent=axes_extent,axes=ax3_flat[5],vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,colorbar_label=False,cmap='Blues')
+            if Stage4_i is not None:
+                plot_Precip_subplot=plot_2D_map(Stage4_i,title=model,axes_extent=axes_extent,axes=ax3_flat[5],vmin=vmin,vmax=vmax,n_levels=50,colorbar=True,colorbar_label=False,cmap='Blues')
         fig3.savefig(os.path.join('Plots','Precip_Maps_hrly_accum',case,'Precip_Maps'+time.strftime('%Y-%m-%d %H:%M:%S')+'.png'),dpi=600)
         plt.close(fig3)
 print('done')

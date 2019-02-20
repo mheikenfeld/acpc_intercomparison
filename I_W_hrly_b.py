@@ -20,9 +20,7 @@ matplotlib.pyplot.switch_backend('agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-from copy import deepcopy
-
-from Setup_intercomparison import load_variable_cube,color,variable_names,directory,filename,filename_test
+from Setup_intercomparison import load_variable_cube,color,variable_names,directory,filename
 from collections import defaultdict, OrderedDict
 f = lambda: defaultdict(f) 
 
@@ -33,7 +31,7 @@ warnings.filterwarnings('ignore', category=RuntimeWarning, append=True)
 warnings.filterwarnings('ignore', category=FutureWarning, append=True)
 
 
-savename = 'G3_hrly_b4'
+savename = 'G3_hrly_b'
 
 
 models=[]
@@ -42,9 +40,6 @@ models.append('RAMS_CSU')
 models.append('COSMO_KIT')
 models.append('UM_LEEDS')
 models.append('WRF_NASA')
-
-# use short subset of data files from each model for testing:
-filename=filename_test
 
 # Get filename paths for all the data
 files_CLN_500m_1h=OrderedDict(); files_POL_500m_1h=OrderedDict()
@@ -57,17 +52,18 @@ for model in models:
 #########################################################################    
 ############## Load data for each model, using specified load module
 #########################################################################   
-# def time_interval(cell):
-#     """Returns true if the model level is between X and Y"""
-#     return datetime.datetime(2013,6,19,21,0,0) <= cell <= datetime.datetime(2013,6,19,23,0,0)
+def time_interval(cell):
+    """Returns true if the model level is between X and Y"""
+    return datetime.datetime(2013,6,19,21,0,0) <= cell <= datetime.datetime(2013,6,19,23,0,0)
 
-# constraint_time=iris.Constraint(time=time_interval)
+constraint_time=iris.Constraint(time=time_interval)
 
 MV_CLN=OrderedDict()
 MV_POL=OrderedDict()
 for model in models:
-    MV_CLN[model]=load_variable_cube[model](files_CLN_500m_1h[model],variable_names[model]['W'])
-    MV_POL[model]=load_variable_cube[model](files_POL_500m_1h[model],variable_names[model]['W'])
+    MV_CLN[model]=load_variable_cube[model](files_CLN_500m_1h[model],variable_names[model]['W']).extract_cube(constraint_time)
+
+    MV_POL[model]=load_variable_cube[model](files_POL_500m_1h[model],variable_names[model]['W']).extract_cube(constraint_time)
 
 
 
@@ -84,10 +80,12 @@ matplotlib.rcParams.update({'font.size': 14})
 fig1,ax1=plt.subplots(figsize=(6,4),nrows=1,ncols=1)
 cnt = 0
 for model,W_i in MV_CLN.items():
+    print(model)
+    print(W_i)
     yaxis = W_i.coord('geopotential_height').points
     data = W_i.collapsed(('x','y','time'),MEAN).data
     
-    plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model+ ' CLN')
+    plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model)
     plt.ylim((0,15))
     plt.legend()
     plt.ylabel('Altitude (km)')
@@ -95,51 +93,10 @@ for model,W_i in MV_CLN.items():
     plt.grid()
     print('W vs. Height calculated and plotted for',model)
 plt.tight_layout()
-
-for model,W_i in MV_POL.items():
-    yaxis = W_i.coord('geopotential_height').points
-    data = W_i.collapsed(('x','y','time'),MEAN).data
-    
-    plt.plot(data,yaxis/1000,color=color[model],linestyle='-',label=model+ ' POL')
-    plt.ylim((0,15))
-    plt.legend()
-    plt.ylabel('Altitude (km)')
-    plt.xlabel('Mean Vertical Velocity (m/s)')
-    plt.grid()
-    print('W vs. Height calculated and plotted for',model)
-plt.tight_layout()
-
 
 os.makedirs('Plots/W',exist_ok=True)
 plt.savefig(os.path.join('Plots','W',savename+'W_prof.png'))
 plt.close(fig1)
-
-
-
-############################################################
-####### Plot Mean W idff Profile for entire simulation
-############################################################
-matplotlib.rcParams.update({'font.size': 14})
-fig1,ax1=plt.subplots(figsize=(6,4),nrows=1,ncols=1)
-cnt = 0
-for i,model in enumerate(models):
-    yaxis = MV_POL[model].coord('geopotential_height').points
-    data = MV_POL[model].collapsed(('x','y','time'),MEAN).data -MV_CLN[model].collapsed(('x','y','time'),MEAN).data
-    
-    plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model+ 'POL- CLN')
-    plt.ylim((0,15))
-    plt.legend()
-    plt.ylabel('Altitude (km)')
-    plt.xlabel('Mean Vertical Velocity (m/s)')
-    plt.grid()
-    print('W vs. Height diff calculated and plotted for',model)
-plt.tight_layout()
-
-
-os.makedirs('Plots/W',exist_ok=True)
-plt.savefig(os.path.join('Plots','W',savename+'W_prof_diff.png'))
-plt.close(fig1)
-
 
 
 ############################################################
@@ -148,49 +105,24 @@ plt.close(fig1)
 
 for w_thresh in [1,2,5]:
     matplotlib.rcParams.update({'font.size': 14})
-    fig1,ax1=plt.subplots(figsize=(10,6),nrows=1,ncols=1)
-    fig2,ax2=plt.subplots(figsize=(10,6),nrows=1,ncols=1)
-
-    for i,model in enumerate(models):  
-        
-        yaxis = MV_CLN[model].coord('geopotential_height').points
-        CLN=deepcopy(MV_CLN[model])
-        CLN.data=masked_where(CLN.core_data()<w_thresh,CLN.core_data())
-        data_CLN = CLN.collapsed(('x','y','time'),MEAN).core_data()
-            
-        POL=deepcopy(MV_POL[model])
-        POL.data=masked_where(POL.core_data()<w_thresh,POL.core_data())
-        data_POL = POL.collapsed(('x','y','time'),MEAN).core_data()
-
-        ax1.plot(data_CLN,yaxis/1000,color=color[model],linestyle='--',label=model+ ' CLN')
-        ax1.plot(data_POL,yaxis/1000,color=color[model],linestyle='--',label=model+ ' POL')
-        
-        ax2.plot(data_POL-data_CLN,yaxis/1000,color=color[model],linestyle='--',label=model+ ' POL-CLN')
-
-        print('W vs. Height calculated and plotted for',model)
-
-    ax1.set_ylim((0,15))
-    ax1.legend()
-    ax1.set_ylabel('Altitude (km)')
-    ax1.set_xlabel('Mean Vertical Velocity (m/s)')
-    plt.grid()
+    fig1,ax1=plt.subplots(figsize=(6,4),nrows=1,ncols=1)
+    cnt = 0
+    for model,W_i in MV_CLN.items():  
+        yaxis = W_i.coord('geopotential_height').points
+        W_i.data=masked_where(W_i.core_data()<w_thresh,W_i.core_data())
+        data = W_i.collapsed(('x','y','time'),MEAN).data
     
-    ax2.set_ylim((0,15))
-    ax2.legend()
-    ax2.set_ylabel('Altitude (km)')
-    ax2.set_xlabel('Mean Vertical Velocity (m/s)')
-    plt.grid()
-        
+        plt.plot(data,yaxis/1000,color=color[model],linestyle='--',label=model)
+        plt.ylim((0,15))
+        plt.legend()
+        plt.ylabel('Altitude (km)')
+        plt.xlabel('Mean Vertical Velocity (m/s)')
+        plt.grid()
+        print('W vs. Height calculated and plotted for',model)
     plt.tight_layout()
     os.makedirs('Plots/W',exist_ok=True)
-    fig1.savefig(os.path.join('Plots','W',savename+'W_prof_threshold_'+ str(w_thresh)+'.png'))
-    fig1.savefig(os.path.join('Plots','W',savename+'W_prof_diff_threshold_'+ str(w_thresh)+'.png'))
-
+    plt.savefig(os.path.join('Plots','W',savename+'W_prof_threshold_'+ str(w_thresh)+'.png'))
     plt.close(fig1)
-    plt.close(fig2)
-
-    
-    
 
 # ##########################################################################
 # ####### Plot Mean W Profile versus Time for all the models
