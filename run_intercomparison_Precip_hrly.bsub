@@ -4,7 +4,7 @@
 #BSUB -e intercomparison_Precip_hrly.err 
 #BSUB -W 06:00
 
-source activate ACPC_intercomparison
+source activate acpc
 python I_Precip_hrly.py
 
 
