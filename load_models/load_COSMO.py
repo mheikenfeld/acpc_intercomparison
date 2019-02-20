@@ -5,7 +5,7 @@
 import iris
 import numpy as np
 from load_models.make_geopotential_height_coord import geopotential_height_coord,geopotential_height_coord_stag
-
+from copy import deepcopy
 import cf_units as unit
 import datetime
 
@@ -61,7 +61,9 @@ def load_COSMO(files,variable):
 
     # for 3D variables (x,y,z)  
     if len(np.shape(cube_out)) == 4:
-        model_level_coord=iris.coords.DimCoord(np.arange(cube_out.shape[1]),standard_name="model_level_number")
+        #cosmo has top to bottom levels, flip around coordinatesnp.
+        model_levels=np.flip(np.arange(cube_out.shape[1]),axis=0)
+        model_level_coord=iris.coords.DimCoord(model_levels,standard_name="model_level_number")
         cube_out.add_dim_coord(model_level_coord,data_dim=1)
     
         x_coord=iris.coords.DimCoord(np.arange(cube_out.shape[2]),long_name="x")
@@ -72,9 +74,12 @@ def load_COSMO(files,variable):
         
         if 'model_level_number' in [coord.name() for coord in cube_out.coords()]:
             if cube_out.coord('model_level_number').shape[0]==95:
-                cube_out.add_aux_coord(geopotential_height_coord_stag,data_dims=cube_out.coord_dims('model_level_number'))
+                cube_out.add_aux_coord(deepcopy(geopotential_height_coord_stag),data_dims=cube_out.coord_dims('model_level_number'))
             if cube_out.coord('model_level_number').shape[0]==94:
-                cube_out.add_aux_coord(geopotential_height_coord,data_dims=cube_out.coord_dims('model_level_number'))
+                cube_out.add_aux_coord(deepcopy(geopotential_height_coord),data_dims=cube_out.coord_dims('model_level_number'))
+            #cosmo has top to bottom levels, flip around coordinates
+            coord=cube_out.coord('geopotential_height').points
+            cube_out.coord('geopotential_height').points=np.flip(coord,axis=0)
 
     # for 2D variables (x,y)
     elif len(np.shape(cube_out)) == 3:
@@ -84,6 +89,5 @@ def load_COSMO(files,variable):
     
         y_coord=iris.coords.DimCoord(np.arange(cube_out.shape[2]),long_name="y")
         cube_out.add_aux_coord(y_coord,data_dims=2)
-        
     return cube_out
 

@@ -7,7 +7,7 @@ import os
 import numpy as np
 import datetime
 from cf_units import date2num,CALENDAR_STANDARD
-
+from copy import deepcopy
 def callback(cube, field, filename):
     from re import sub
     if '.nc' in filename:
@@ -79,9 +79,15 @@ def load_UM(files,variable):
         #cube.add_aux_coord(Z_coord,data_dims=(1,2,3))
         if 'model_level_number' in [coord.name() for coord in cube_out.coords()]:
             if cube_out.coord('model_level_number').shape[0]==95:
-                cube_out.add_aux_coord(geopotential_height_coord_stag,data_dims=cube_out.coord_dims('model_level_number'))
+                cube_out.add_aux_coord(deepcopy(geopotential_height_coord_stag),data_dims=cube_out.coord_dims('model_level_number'))
+                
             if cube_out.coord('model_level_number').shape[0]==94:
-                cube_out.add_aux_coord(geopotential_height_coord,data_dims=cube_out.coord_dims('model_level_number'))
+                #cosmo has top to bottom levels, flip around coordinates
+                cube_out.add_aux_coord(deepcopy(geopotential_height_coord),data_dims=cube_out.coord_dims('model_level_number'))
+            #the UM has top to bottom levels, flip around coordinates
+
+            coord=cube_out.coord('geopotential_height').points
+            cube_out.coord('geopotential_height').points=np.flip(coord,axis=0)
 
     # for 2D variables (x,y)
     elif len(np.shape(cube_out)) == 3:
