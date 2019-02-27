@@ -21,7 +21,7 @@ def load_Condensate(files,model):
     elif model == 'WRF_NASA':
         for i in np.arange(0,3):                
             COND[i]=load_variable_cube[model](files,variable_names[model][Hydrometeors[i]])
-    elif model in ['WRF_OXF','COSMO_KIT','UM_LEEDS']:
+    elif model in ['WRF_OXF','COSMO_KIT','UM_LEEDS','MesoNH_Toulouse']:
         for i in np.arange(0,5):
             COND[i]=load_variable_cube[model](files,variable_names[model][Hydrometeors[i]])
     
@@ -33,8 +33,8 @@ def load_Condensate(files,model):
         TCL = COND[0]+COND[1]
         TCI = COND[2]
         
-    elif model in ['WRF_OXF','COSMO_KIT','UM_LEEDS']:
-        TCL = COND[0]+COND[1]
+    elif model in ['WRF_OXF','COSMO_KIT','UM_LEEDS','MesoNH_Toulouse']:
+        TCL = COND[0]+COND[1]a
         TCI = COND[2]+COND[3]+COND[4]
         
     TC = TCI+TCL
