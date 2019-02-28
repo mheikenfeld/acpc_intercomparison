@@ -68,6 +68,15 @@ variable_names['UM_LEEDS'][new_varname]='w'
 variable_names['WRF_NASA'][new_varname]='W'
 variable_names['MesoNH_Toulouse'][new_varname]='w'
 
+# Specify variable name and unique variable id for each model
+new_varname = 'T'
+variable_names['WRF_OXF'][new_varname]='air_temperature'
+variable_names['RAMS_CSU'][new_varname]='air_temperature'
+variable_names['COSMO_KIT'][new_varname]='T'
+variable_names['UM_LEEDS'][new_varname]='T'
+variable_names['WRF_NASA'][new_varname]='air_temperature'
+variable_names['MesoNH_Toulouse'][new_varname]='T'
+
 
 new_varnames = ('QCLD','QRAIN','QICE','QSNOW','QGRA','QDRI','QAGG','QHAIL')
 
