@@ -48,7 +48,6 @@ variable_names['UM_LEEDS'][new_varname]='pcp_accum'
 variable_names['WRF_NASA'][new_varname]='RAINNC'
 variable_names['MesoNH_Toulouse'][new_varname]='pcp_accum'
 
-
 # Specify variable name and unique variable id for each model
 new_varname = 'OLR'
 variable_names['WRF_OXF'][new_varname]='OLR'
@@ -57,7 +56,6 @@ variable_names['COSMO_KIT'][new_varname]='THBT_RAD'
 variable_names['UM_LEEDS'][new_varname]='LWup_TOA'
 variable_names['WRF_NASA'][new_varname]='TLWUP'
 variable_names['MesoNH_Toulouse'][new_varname]='LWup_TOA'
-
 
 # Specify variable name and unique variable id for each model
 new_varname = 'W'
@@ -77,8 +75,16 @@ variable_names['UM_LEEDS'][new_varname]='T'
 variable_names['WRF_NASA'][new_varname]='air_temperature'
 variable_names['MesoNH_Toulouse'][new_varname]='T'
 
+new_varnames = ('QV','QCLD','QRAIN','QICE','QSNOW','QGRA','QDRI','QAGG','QHAIL','NCLD','NRAIN','NICE','NSNOW','NGRA','NDRI','NAGG','NHAIL','NAERO')
 
-new_varnames = ('QCLD','QRAIN','QICE','QSNOW','QGRA','QDRI','QAGG','QHAIL')
+# Specify variable name and unique variable id for each model PJM Added
+new_varname = 'QV' # kg / kg
+variable_names['WRF_OXF'][new_varname]='QVAPOR'
+variable_names['RAMS_CSU'][new_varname]='RV'
+variable_names['COSMO_KIT'][new_varname]='QV'
+variable_names['UM_LEEDS'][new_varname]='qv'
+variable_names['WRF_NASA'][new_varname]='QVAPOR'
+variable_names['MesoNH_Toulouse'][new_varname]='qv'
 
 new_varname = 'QCLD'
 variable_names['WRF_OXF'][new_varname]='QCLOUD'
@@ -95,7 +101,6 @@ variable_names['COSMO_KIT'][new_varname]='QR'
 variable_names['UM_LEEDS'][new_varname]='qr'
 variable_names['WRF_NASA'][new_varname]='QRAIN'
 variable_names['MesoNH_Toulouse'][new_varname]='qr'
-
 
 new_varname = 'QDRI' # Only RAMS has DRIZZLE
 #variable_names['WRF_OXF'][new_varname]=''
@@ -140,12 +145,82 @@ variable_names['MesoNH_Toulouse'][new_varname]='qg'
 new_varname = 'QHAIL' # Only RAMS has Hail category
 #variable_names['WRF_OXF'][new_varname]=''
 variable_names['RAMS_CSU'][new_varname]='RHP'
-#variable_names['COSMO_KIT'][new_varname]=''
+variable_names['COSMO_KIT'][new_varname]='QH'
 #variable_names['UM_LEEDS'][new_varname]=''
 #variable_names['WRF_NASA'][new_varname]=''
 #variable_names['MesoNH_Toulouse'][new_varname]=''
 
+new_varname = 'NCLD'
+variable_names['WRF_OXF'][new_varname]='QNCLOUD'
+variable_names['RAMS_CSU'][new_varname]='CCP' # #/kg
+variable_names['COSMO_KIT'][new_varname]='NCCLOUD' # #/kg
+variable_names['UM_LEEDS'][new_varname]='nc' # #/kg
+variable_names['WRF_NASA'][new_varname]='QNCLOUD'
+variable_names['MesoNH_Toulouse'][new_varname]='nc' # #/kg
 
+new_varname = 'NRAIN'
+variable_names['WRF_OXF'][new_varname]='QNRAIN'
+variable_names['RAMS_CSU'][new_varname]='CRP' # #/kg
+variable_names['COSMO_KIT'][new_varname]='NCRAIN' # #/kg
+variable_names['UM_LEEDS'][new_varname]='nr' # #/kg
+variable_names['WRF_NASA'][new_varname]='QNRAIN'
+variable_names['MesoNH_Toulouse'][new_varname]='nr' # #/kg
+
+new_varname = 'NDRI' # Only RAMS has DRIZZLE
+#variable_names['WRF_OXF'][new_varname]=''
+variable_names['RAMS_CSU'][new_varname]='CDP' # #/kg
+#variable_names['COSMO_KIT'][new_varname]=''
+#variable_names['UM_LEEDS'][new_varname]=''
+#variable_names['WRF_NASA'][new_varname]=''
+#variable_names['MesoNH_Toulouse'][new_varname]=' '
+
+new_varname = 'NICE'
+variable_names['WRF_OXF'][new_varname]='QNICE' # #/kg
+variable_names['RAMS_CSU'][new_varname]='CPP' # #/kg
+variable_names['COSMO_KIT'][new_varname]='NCICE' # #/kg
+variable_names['UM_LEEDS'][new_varname]='ni' # #/kg
+variable_names['WRF_NASA'][new_varname]='QNICE'
+variable_names['MesoNH_Toulouse'][new_varname]='ni' # #/kg
+
+new_varname = 'NSNOW' 
+variable_names['WRF_OXF'][new_varname]='QNSNOW' # #/kg
+variable_names['RAMS_CSU'][new_varname]='CSP' # #/kg
+variable_names['COSMO_KIT'][new_varname]='NCSNOW' # #/kg
+variable_names['UM_LEEDS'][new_varname]='ns' # #/kg
+variable_names['WRF_NASA'][new_varname]='QNSNOW' # #/kg
+variable_names['MesoNH_Toulouse'][new_varname]='ns' # #/kg
+
+new_varname = 'NAGG' # Only RAMS has aggregate category
+#variable_names['WRF_OXF'][new_varname]=''
+variable_names['RAMS_CSU'][new_varname]='CAP' # #/kg
+#variable_names['COSMO_KIT'][new_varname]=''
+#variable_names['UM_LEEDS'][new_varname]=''
+#variable_names['WRF_NASA'][new_varname]=''
+#variable_names['MesoNH_Toulouse'][new_varname]=' '
+
+new_varname = 'NGRA'
+variable_names['WRF_OXF'][new_varname]='QNGRAUPEL' # #/kg
+variable_names['RAMS_CSU'][new_varname]='CGP' # #/kg
+variable_names['COSMO_KIT'][new_varname]='NCGRAUPEL' # #/kg
+variable_names['UM_LEEDS'][new_varname]='ng' # #/kg
+variable_names['WRF_NASA'][new_varname]='QNGRAUPEL'
+variable_names['MesoNH_Toulouse'][new_varname]='ng' # #/kg
+
+new_varname = 'NHAIL' # Only RAMS and COSMO has Hail category
+#variable_names['WRF_OXF'][new_varname]=''
+variable_names['RAMS_CSU'][new_varname]='CHP' # #/kg
+variable_names['COSMO_KIT'][new_varname]='NCHAIL' # #/kg
+#variable_names['UM_LEEDS'][new_varname]=''
+#variable_names['WRF_NASA'][new_varname]=''
+#variable_names['MesoNH_Toulouse'][new_varname]=''
+
+new_varname = 'NAERO' # 
+# variable_names['WRF_OXF'][new_varname]='NAER1'
+variable_names['RAMS_CSU'][new_varname]='CCCNP' # #/kg
+# variable_names['COSMO_KIT'][new_varname]='' 
+variable_names['UM_LEEDS'][new_varname]='na' # #/kg
+# variable_names['WRF_NASA'][new_varname]=''
+variable_names['MesoNH_Toulouse'][new_varname]='n_ccn_free'
 
 #%%
 # Filenames and Directories
@@ -168,37 +243,35 @@ filename['1500m']['1h']['UM_LEEDS']="*201306*.nc"
 filename['1500m']['1h']['WRF_NASA']="wrfout_d02*"
 filename['1500m']['1h']['MesoNH_Toulouse']="1.5km201306*.nc"
 
-
 filename['500m']['1h']=OrderedDict()
 filename['500m']['1h']['WRF_OXF']="wrfout_d03*"
 filename['500m']['1h']['RAMS_CSU']="a-A*-g3.h5"
 filename['500m']['1h']['COSMO_KIT']="lfff*0000.nc"
 filename['500m']['1h']['UM_LEEDS']="*201306*.nc"
 filename['500m']['1h']['WRF_NASA']="wrfout_d03*"
-filename['500m']['1h']['MesoNH_Toulouse']="0.5km201306*.nc"
+filename['500m']['1h']['MesoNH_Toulouse']="500m201306*.nc"
 
-filename['500m']['5m']=OrderedDict()
-filename['500m']['5m']['WRF_OXF']="wrfout_d03*"
-filename['500m']['5m']['RAMS_CSU']="a-A*-g3.h5"
-filename['500m']['5m']['COSMO_KIT']="lfff*0000.nc_5min"
-filename['500m']['5m']['UM_LEEDS']="*201306*.nc"
-filename['500m']['5m']['WRF_NASA']="wrfout_d03*"
-filename['500m']['5m']['MesoNH_Toulouse']="0.5km201306*.nc"
+filename['500m']['5min']=OrderedDict()
+filename['500m']['5min']['WRF_OXF']="wrfout_d03*"
+filename['500m']['5min']['RAMS_CSU']="a-A*-g3.h5"
+filename['500m']['5min']['COSMO_KIT']="lfff*0000.nc_5min"
+filename['500m']['5min']['UM_LEEDS']="*201306*.nc"
+filename['500m']['5min']['WRF_NASA']="wrfout_d03*"
+filename['500m']['5min']['MesoNH_Toulouse']="500m201306*.nc"
 
-filename['500m']['1m']=OrderedDict()
-filename['500m']['1m']['WRF_OXF']="wrfout_d03*"
-filename['500m']['1m']['RAMS_CSU']="a-A*-g3.h5"
-filename['500m']['1m']['COSMO_KIT']="lfff*0000.nc_1min"
-filename['500m']['1m']['UM_LEEDS']="*201306*.nc"
-filename['500m']['1m']['WRF_NASA']="wrfout_d03*"
-filename['500m']['1m']['MesoNH_Toulouse']="0.5km201306*.nc"
+filename['500m']['1min']=OrderedDict()
+filename['500m']['1min']['WRF_OXF']="wrfout_d03*"
+filename['500m']['1min']['RAMS_CSU']="a-A*-g3.h5"
+filename['500m']['1min']['COSMO_KIT']="lfff*0000.nc_1min"
+filename['500m']['1min']['UM_LEEDS']="*201306*.nc"
+filename['500m']['1min']['WRF_NASA']="wrfout_d03*"
+filename['500m']['1min']['MesoNH_Toulouse']="500m201306*.nc"
 
 directory=defaultdict(f)
 
 directory['CLN']['1500m']['1h']=OrderedDict()
 directory['CLN']['1500m']['1h']['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/CLN/1h/d02"
-# directory['CLN']['1500m']['1h']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/CLN/x.hrly"
-directory['CLN']['1500m']['1h']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU_Temp/CLN/1h"
+directory['CLN']['1500m']['1h']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/CLN/1h/d02"
 #directory['CLN']['1500m']['1h']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m"
 directory['CLN']['1500m']['1h']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m_3DTurb_type7"
 directory['CLN']['1500m']['1h']['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/CLN/0p5km_1h"
@@ -207,8 +280,7 @@ directory['CLN']['1500m']['1h']['MesoNH_Toulouse']="/group_workspaces/jasmin2/ac
 
 directory['POL']['1500m']['1h']=OrderedDict()
 directory['POL']['1500m']['1h']['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/POL/1h/d02"
-# directory['POL']['1500m']['1h']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/POL/x.hrly"
-directory['POL']['1500m']['1h']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU_Temp/POL/1h"
+directory['POL']['1500m']['1h']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/POL/1h/d02"
 #directory['POL']['500m']['1h']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m"
 directory['POL']['1500m']['1h']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m_3DTurb_type7"
 directory['POL']['1500m']['1h']['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/POL/0p5km_1h"
@@ -217,8 +289,7 @@ directory['POL']['1500m']['1h']['MesoNH_Toulouse']="/group_workspaces/jasmin2/ac
 
 directory['CLN']['500m']['1h']=OrderedDict()
 directory['CLN']['500m']['1h']['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/CLN/1h/d03"
-# directory['CLN']['500m']['1h']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/CLN/x.hrly"
-directory['CLN']['500m']['1h']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU_Temp/CLN/1h"
+directory['CLN']['500m']['1h']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/CLN/1h/d03"
 #directory['CLN']['500m']['1h']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m"
 directory['CLN']['500m']['1h']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m_3DTurb_type7"
 directory['CLN']['500m']['1h']['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/CLN/0p5km_1h"
@@ -227,53 +298,48 @@ directory['CLN']['500m']['1h']['MesoNH_Toulouse']="/group_workspaces/jasmin2/acp
 
 directory['POL']['500m']['1h']=OrderedDict()
 directory['POL']['500m']['1h']['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/POL/1h/d03"
-# directory['POL']['500m']['1h']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/POL/x.hrly"
-directory['POL']['500m']['1h']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU_Temp/POL/1h"
+directory['POL']['500m']['1h']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/POL/1h/d03"
 #directory['POL']['500m']['1h']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m"
 directory['POL']['500m']['1h']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m_3DTurb_type7"
 directory['POL']['500m']['1h']['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/POL/0p5km_1h"
 directory['POL']['500m']['1h']['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/POL/1h/d03"
 directory['POL']['500m']['1h']['MesoNH_Toulouse']="/group_workspaces/jasmin2/acpc/houston_deep_convection/MesoNH_Toulouse/pol/0p5km/"
 
-directory['CLN']['500m']['5m']=OrderedDict()
-directory['CLN']['500m']['5m']['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/CLN/5min/d03"
-# directory['CLN']['500m']['5m']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/CLN/x.out.5m"
-directory['CLN']['500m']['5m']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU_Temp/CLN/5min"
-#directory['CLN']['500m']['5m']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m"
-directory['CLN']['500m']['5m']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m_3DTurb_type7"
-directory['CLN']['500m']['5m']['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/CLN/0p5km_5m"
-directory['CLN']['500m']['5m']['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/CLN/5min/d03"
-directory['CLN']['500m']['5m']['MesoNH_Toulouse']="/group_workspaces/jasmin2/acpc/houston_deep_convection/MesoNH_Toulouse/cln/0p5km/"
+directory['CLN']['500m']['5min']=OrderedDict()
+directory['CLN']['500m']['5min']['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/CLN/5min/d03"
+directory['CLN']['500m']['5min']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/CLN/5min/d03"
+#directory['CLN']['500m']['5min']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m"
+directory['CLN']['500m']['5min']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m_3DTurb_type7"
+directory['CLN']['500m']['5min']['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/CLN/0p5km_5m"
+directory['CLN']['500m']['5min']['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/CLN/5min/d03"
+directory['CLN']['500m']['5min']['MesoNH_Toulouse']="/group_workspaces/jasmin2/acpc/houston_deep_convection/MesoNH_Toulouse/cln/0p5km/"
 
-directory['POL']['500m']['5m']=OrderedDict()
-directory['POL']['500m']['5m']['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/POL/5min/d03"
-# directory['POL']['500m']['5m']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/POL/x.out.5m"
-directory['CLN']['500m']['5m']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU_Temp/CLN/5min"
-#directory['POL']['500m']['5m']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m"
-directory['POL']['500m']['5m']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m_3DTurb_type7"
-directory['POL']['500m']['5m']['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/POL/0p5km_5m"
-directory['POL']['500m']['5m']['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/POL/5min/d03"
-directory['POL']['500m']['5m']['MesoNH_Toulouse']="/group_workspaces/jasmin2/acpc/houston_deep_convection/MesoNH_Toulouse/pol/0p5km/"
+directory['POL']['500m']['5min']=OrderedDict()
+directory['POL']['500m']['5min']['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/POL/5min/d03"
+directory['POL']['500m']['5min']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/POL/5min/d03"
+#directory['POL']['500m']['5min']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m"
+directory['POL']['500m']['5min']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m_3DTurb_type7"
+directory['POL']['500m']['5min']['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/POL/0p5km_5m"
+directory['POL']['500m']['5min']['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/POL/5min/d03"
+directory['POL']['500m']['5min']['MesoNH_Toulouse']="/group_workspaces/jasmin2/acpc/houston_deep_convection/MesoNH_Toulouse/pol/0p5km/"
 
-directory['CLN']['500m']['1m']=OrderedDict()
-directory['CLN']['500m']['1m']['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/CLN/1min/d03"
-# directory['CLN']['500m']['1m']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/CLN/x.out.5m"
-directory['CLN']['500m']['1m']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU_Temp/CLN/1min"
-#directory['CLN']['500m']['1m']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m"
-directory['CLN']['500m']['1m']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m_3DTurb_type7"
-directory['CLN']['500m']['1m']['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/CLN/0p5km_5m"
-directory['CLN']['500m']['1m']['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/CLN/1min/d03"
-directory['CLN']['500m']['1m']['MesoNH_Toulouse']="/group_workspaces/jasmin2/acpc/houston_deep_convection/MesoNH_Toulouse/cln/0p5km/"
+directory['CLN']['500m']['1min']=OrderedDict()
+directory['CLN']['500m']['1min']['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/CLN/1min/d03"
+directory['CLN']['500m']['1min']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/CLN/1min/d03"
+#directory['CLN']['500m']['1min']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m"
+directory['CLN']['500m']['1min']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/CLN/500m_3DTurb_type7"
+directory['CLN']['500m']['1min']['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/CLN/0p5km_5m"
+directory['CLN']['500m']['1min']['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/CLN/1min/d03"
+directory['CLN']['500m']['1min']['MesoNH_Toulouse']="/group_workspaces/jasmin2/acpc/houston_deep_convection/MesoNH_Toulouse/cln/0p5km/"
 
-directory['POL']['500m']['1m']=OrderedDict()
-directory['POL']['500m']['1m']['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/POL/1min/d03"
-# directory['POL']['500m']['1m']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/POL/x.out.1m"
-directory['POL']['500m']['1m']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU_Temp/POL/1min"
-#directory['POL']['500m']['1m']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m"
-directory['POL']['500m']['1m']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m_3DTurb_type7"
-directory['POL']['500m']['1m']['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/POL/0p5km_1m"
-directory['POL']['500m']['1m']['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/POL/1min/d03"
-directory['POL']['500m']['1m']['MesoNH_Toulouse']="/group_workspaces/jasmin2/acpc/houston_deep_convection/MesoNH_Toulouse/pol/0p5km/"
+directory['POL']['500m']['1min']=OrderedDict()
+directory['POL']['500m']['1min']['WRF_OXF']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_Oxford/POL/1min/d03"
+directory['POL']['500m']['1min']['RAMS_CSU']="/group_workspaces/jasmin2/acpc/houston_deep_convection/RAMS_CSU/POL/1min/d03"
+#directory['POL']['500m']['1min']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m"
+directory['POL']['500m']['1min']['COSMO_KIT']="/group_workspaces/jasmin2/acpc/houston_deep_convection/COSMO_KIT/POL/500m_3DTurb_type7"
+directory['POL']['500m']['1min']['UM_LEEDS']="/group_workspaces/jasmin2/acpc/houston_deep_convection/UM_Leeds/POL/0p5km_1m"
+directory['POL']['500m']['1min']['WRF_NASA']="/group_workspaces/jasmin2/acpc/houston_deep_convection/WRF_GISS/POL/1min/d03"
+directory['POL']['500m']['1min']['MesoNH_Toulouse']="/group_workspaces/jasmin2/acpc/houston_deep_convection/MesoNH_Toulouse/pol/0p5km/"
 
 ######################################################    
 ...
