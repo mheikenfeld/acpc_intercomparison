@@ -75,6 +75,42 @@ variable_names['UM_LEEDS'][new_varname]='T'
 variable_names['WRF_NASA'][new_varname]='air_temperature'
 variable_names['MesoNH_Toulouse'][new_varname]='T'
 
+# Specify variable name and unique variable id for each model
+new_varname = 'P'
+variable_names['WRF_OXF'][new_varname]='air_pressure'
+variable_names['RAMS_CSU'][new_varname]='air_pressure'
+variable_names['COSMO_KIT'][new_varname]='P'
+variable_names['UM_LEEDS'][new_varname]='P'
+variable_names['WRF_NASA'][new_varname]='air_pressure'
+variable_names['MesoNH_Toulouse'][new_varname]='P'
+
+# Specify variable name and unique variable id for each model
+new_varname = 'rho'
+variable_names['WRF_OXF'][new_varname]='RHO'
+variable_names['RAMS_CSU'][new_varname]='dn0'
+#variable_names['COSMO_KIT'][new_varname]=''
+variable_names['UM_LEEDS'][new_varname]='rho'
+variable_names['WRF_NASA'][new_varname]='RHO'
+variable_names['MesoNH_Toulouse'][new_varname]='rho'
+
+# Specify variable name and unique variable id for each model
+new_varname = 'U'
+variable_names['WRF_OXF'][new_varname]='U'
+variable_names['RAMS_CSU'][new_varname]='UC'
+variable_names['COSMO_KIT'][new_varname]='U'
+variable_names['UM_LEEDS'][new_varname]='u'
+variable_names['WRF_NASA'][new_varname]='U'
+variable_names['MesoNH_Toulouse'][new_varname]='U'
+
+# Specify variable name and unique variable id for each model
+new_varname = 'V'
+variable_names['WRF_OXF'][new_varname]='V'
+variable_names['RAMS_CSU'][new_varname]='VC'
+variable_names['COSMO_KIT'][new_varname]='V'
+variable_names['UM_LEEDS'][new_varname]='v'
+variable_names['WRF_NASA'][new_varname]='V'
+variable_names['MesoNH_Toulouse'][new_varname]='V'
+
 new_varnames = ('QV','QCLD','QRAIN','QICE','QSNOW','QGRA','QDRI','QAGG','QHAIL','NCLD','NRAIN','NICE','NSNOW','NGRA','NDRI','NAGG','NHAIL','NAERO')
 
 # Specify variable name and unique variable id for each model PJM Added
