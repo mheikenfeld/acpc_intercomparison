@@ -6,7 +6,7 @@ import iris
 import os
 import numpy as np
 from copy import deepcopy
-
+from cf_units import Unit
 def load_concatentate(files,variable):
     cubes=iris.load(files,variable)
     for cube in cubes:
@@ -23,6 +23,9 @@ def load_MesoNH(files,variable):
     lon=iris.load_cube(files[0],'lon')
     
     cube_out=load_concatentate(files,variable)
+    
+    new_time_unit = Unit('days since 1970-01-01', calendar='gregorian')
+    cube_out.coord('time').convert_units(new_time_unit)
 
     # for 4D variables (time,z,y,x)
     if len(np.shape(cube_out)) == 4:

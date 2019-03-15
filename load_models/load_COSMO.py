@@ -6,7 +6,7 @@ import iris
 import numpy as np
 from load_models.make_geopotential_height_coord import geopotential_height_coord,geopotential_height_coord_stag
 from copy import deepcopy
-import cf_units as unit
+from cf_units import Unit
 import datetime
 
 def load_COSMO(files,variable):        
@@ -53,11 +53,13 @@ def load_COSMO(files,variable):
 
         cube.remove_coord('time')
         cube.add_dim_coord(iris.coords.DimCoord(np.array(datetime_greg),standard_name='time', long_name='time', var_name='time', 
-                                                 units=unit.Unit('days since 1970-01-01', calendar='gregorian'), bounds=None, 
+                                                 units=Unit('days since 1970-01-01', calendar='gregorian'), bounds=None, 
                                                  attributes=None, coord_system=None, circular=False),data_dim=0)    
         
     cubes = iris.cube.CubeList(cubes)
     cube_out=cubes.concatenate_cube('time')
+    new_time_unit = Unit('days since 1970-01-01', calendar='gregorian')
+    cube_out.coord('time').convert_units(new_time_unit)
 
     # for 3D variables (x,y,z)  
     if len(np.shape(cube_out)) == 4:
