@@ -26,5 +26,6 @@ geopotential_height_array=np.array([-24.0999279 ,    24.6950779 ,    75.92983246
        20231.390625  , 20531.390625  , 20831.390625  , 21131.390625  ,
        21431.390625  , 21731.390625  , 22031.390625 ])
 
+geopotential_height_coord_short=iris.coords.AuxCoord(geopotential_height_array[:-2],standard_name='geopotential_height',units='m')
 geopotential_height_coord=iris.coords.AuxCoord(geopotential_height_array[:-1],standard_name='geopotential_height',units='m')
 geopotential_height_coord_stag=iris.coords.AuxCoord(geopotential_height_array,standard_name='geopotential_height',units='m')
