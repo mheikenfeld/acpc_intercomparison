@@ -23,17 +23,6 @@ def callback(cube, field, filename):
 def load_UM(files,variable):
     from load_models.make_geopotential_height_coord import geopotential_height_coord,geopotential_height_coord_stag,geopotential_height_coord_short
 
-#    model = 'UM_LEEDS'
-#    files = files_CLN_500m_5min[model]
-#    variable = variable_names[model]['OLR']
-    # files=files[1:] # Bad first file in UM data -- getting the following error
-####iris.exceptions.ConcatenateError: failed to concatenate into a single cube.
-#  An unexpected problem prevented concatenation.
-    #    Test Files
-    #    files = '/avalanche/pmarin/ACPC/YELLOWSTONE/NOBAK/UM_C/*20130619_21*.nc'
-    #    variable = 'pcp_accum'
-
-
     filename_aux=os.path.join(os.path.dirname(files[0]),'LMCONSTANTS')
     #Z=iris.load_cube(filename_aux,'Z')
     lat=iris.load_cube(filename_aux,'lat')
@@ -43,18 +32,6 @@ def load_UM(files,variable):
     for cube in cubes:
         cube.attributes=[]
         cube.coord('time').bounds=None
-
-#         # Convert UM Time (Seconds after 2013-06-19 16:00:00) for 5 minute data  to Days after 1970-01-01 (which is in ramscube and wrfcube)
-# 	# Convert UM Time (Seconds after 2013-06-19 12:00:00) for hourly data       
-#         datetime_init = datetime.datetime(2013,6,19,12,0,0)
-#         dt = datetime.timedelta(seconds=np.float64(cube.coord('time').points[0]))
-#         datetime_now = datetime_init+dt
-#         datetime_greg = ( (datetime_now - datetime.datetime(1970,1,1,0,0,0)).days + (datetime_now - datetime.datetime(1970,1,1,0,0,0)).seconds / 86400)
-
-#         cube.remove_coord('time')
-#         cube.add_dim_coord(iris.coords.DimCoord(np.array(datetime_greg),standard_name='time', long_name='time', var_name='time', 
-#                                                  units=unit.Unit('days since 1970-01-01', calendar='gregorian'), bounds=None, 
-#                                                  attributes=None, coord_system=None, circular=False),data_dim=0)    
 
     cube_out=cubes.concatenate_cube('time')
 
@@ -98,10 +75,10 @@ def load_UM(files,variable):
     # for 2D variables (x,y)
     elif len(np.shape(cube_out)) == 3:
 
-        x_coord=iris.coords.DimCoord(np.arange(cube_out.shape[2]),long_name="x")
+        x_coord=iris.coords.DimCoord(np.arange(cube_out.shape[1]),long_name="x")
         cube_out.add_dim_coord(x_coord,data_dim=1)
     
-        y_coord=iris.coords.DimCoord(np.arange(cube_out.shape[3]),long_name="y")
+        y_coord=iris.coords.DimCoord(np.arange(cube_out.shape[2]),long_name="y")
         cube_out.add_dim_coord(y_coord,data_dim=2)
         
         if (cube_out.shape[1]==lat.shape[1] and cube_out.shape[2]==lat.shape[2]):
