@@ -28,13 +28,23 @@ def load_UM(files,variable):
     lat=iris.load_cube(filename_aux,'lat')
     lon=iris.load_cube(filename_aux,'lon')
     
-    cubes=iris.load(files,variable,callback=callback)
+    if variable=='pcp_accum':
+        cubes=iris.load(files,'pcp_rate',callback=callback)
+    else:
+        cubes=iris.load(files,variable,callback=callback)    
+    
+
     for cube in cubes:
         cube.attributes=[]
         cube.coord('time').bounds=None
 
     cube_out=cubes.concatenate_cube('time')
 
+    #create accumulated precip variable as for other models:
+    if variable=='pcp_accum':
+        cube_out.data = cumsum(cube_out.core_data(), axis=0); # Make Cumulative Sum
+
+    
     # for 3D variables (x,y,z)
     print(len(cube_out.shape))
     if len(cube_out.shape) == 4:
@@ -88,9 +98,6 @@ def load_UM(files,variable):
             lat_coord=iris.coords.AuxCoord(lat[0].core_data(),standard_name="latitude")
             cube_out.add_aux_coord(lat_coord,data_dims=(1,2))
         
-    #create accumulated precip variable as for other models:
-    if variable=='pcp_accum':
-        cube_out.data = cumsum(cube_out.core_data(), axis=0); # Make Cumulative Sum
 
     return cube_out
 
