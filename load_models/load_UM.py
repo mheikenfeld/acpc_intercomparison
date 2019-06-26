@@ -42,10 +42,10 @@ def load_UM(files,variable):
         model_level_coord=iris.coords.DimCoord(np.arange(cube_out.shape[1],0,-1),standard_name="model_level_number")
         cube_out.add_dim_coord(model_level_coord,data_dim=1)
     
-        x_coord=iris.coords.DimCoord(np.arange(cube_out.shape[2]),long_name="x")
+        x_coord=iris.coords.DimCoord(np.arange(cube_out.shape[2]),long_name="y")
         cube_out.add_dim_coord(x_coord,data_dim=2)
     
-        y_coord=iris.coords.DimCoord(np.arange(cube_out.shape[3]),long_name="y")
+        y_coord=iris.coords.DimCoord(np.arange(cube_out.shape[3]),long_name="x")
         cube_out.add_dim_coord(y_coord,data_dim=3)
     
         if (cube_out.shape[2]==lat.shape[1] and cube_out.shape[3]==lat.shape[2]):
@@ -75,10 +75,10 @@ def load_UM(files,variable):
     # for 2D variables (x,y)
     elif len(np.shape(cube_out)) == 3:
 
-        x_coord=iris.coords.DimCoord(np.arange(cube_out.shape[1]),long_name="x")
+        x_coord=iris.coords.DimCoord(np.arange(cube_out.shape[1]),long_name="y")
         cube_out.add_dim_coord(x_coord,data_dim=1)
     
-        y_coord=iris.coords.DimCoord(np.arange(cube_out.shape[2]),long_name="y")
+        y_coord=iris.coords.DimCoord(np.arange(cube_out.shape[2]),long_name="x")
         cube_out.add_dim_coord(y_coord,data_dim=2)
         
         if (cube_out.shape[1]==lat.shape[1] and cube_out.shape[2]==lat.shape[2]):
