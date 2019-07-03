@@ -21,18 +21,19 @@ def callback(cube, field, filename):
     return cube
 
 def load_UM(files,variable):
-    from load_models.make_geopotential_height_coord import geopotential_height_coord,geopotential_height_coord_stag,geopotential_height_coord_short
+    from .make_geopotential_height_coord import geopotential_height_coord,geopotential_height_coord_stag,geopotential_height_coord_short
 
     filename_aux=os.path.join(os.path.dirname(files[0]),'LMCONSTANTS')
     #Z=iris.load_cube(filename_aux,'Z')
     lat=iris.load_cube(filename_aux,'lat')
     lon=iris.load_cube(filename_aux,'lon')
-    
-    if variable=='pcp_accum':
-        cubes=iris.load(files,'pcp_rate',callback=callback)
+	
+    #special treatment of accumulated precipitation if missing (in 1 min data)
+    print(variable)
+    if variable=='AccumPrecip':
+        cubes=iris.load(files,'pcp_accum',callback=callback)
     else:
-        cubes=iris.load(files,variable,callback=callback)    
-    
+        cubes=iris.load(files,variable,callback=callback)
 
     for cube in cubes:
         cube.attributes=[]
@@ -40,8 +41,8 @@ def load_UM(files,variable):
 
     cube_out=cubes.concatenate_cube('time')
 
-    #create accumulated precip variable as for other models:
-    if variable=='pcp_accum':
+    #special treatment of accumulated precipitation if missing (in 1 min data)
+    if variable=='AccumPrecip':
         cube_out.data = cumsum(cube_out.core_data(), axis=0); # Make Cumulative Sum
 
     

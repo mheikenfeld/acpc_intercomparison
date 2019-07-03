@@ -16,7 +16,7 @@ def load_concatentate(files,variable):
     return cube_out
 
 def load_MesoNH(files,variable):
-    from load_models.make_geopotential_height_coord import geopotential_height_coord,geopotential_height_coord_stag
+    from .make_geopotential_height_coord import geopotential_height_coord,geopotential_height_coord_stag
     cubes=iris.load(files)
     #Z=iris.load_cube(files,'Z')
     lat=iris.load_cube(files[0],'lat')

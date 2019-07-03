@@ -4,7 +4,7 @@
 
 import iris
 import numpy as np
-from load_models.make_geopotential_height_coord import geopotential_height_coord,geopotential_height_coord_stag
+from .make_geopotential_height_coord import geopotential_height_coord,geopotential_height_coord_stag
 from copy import deepcopy
 from cf_units import Unit
 import datetime
