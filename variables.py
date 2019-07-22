@@ -217,5 +217,11 @@ new_varname = 'NAERO' #
 variable_names['RAMS_CSU'][new_varname]='CCCNP' # #/kg
 variable_names['UM_LEEDS'][new_varname]='na' # #/kg
 variable_names['MesoNH_Toulouse'][new_varname]='n_ccn_free'
+#variable_names['COSMO_KIT'][new_varname]='...'
+variable_names['WRF_OXF'][new_varname]='NAER1' # #/kg
+variable_names['WRF_NASA'][new_varname]='NA1' # #/kg
+variable_names['WRF_PNNL'][new_varname]='QNCCN' # #/kg
+
+
 
 
