@@ -144,7 +144,6 @@ variable_names['WRF_NASA'][new_varname]='QSNOW'
 variable_names['MesoNH_Toulouse'][new_varname]='qs'
 variable_names['WRF_PNNL'][new_varname]='QSNOW'
 
-
 new_varname = 'QGRA'  
 variable_names['WRF_OXF'][new_varname]='QGRAUP'
 variable_names['RAMS_CSU'][new_varname]='RGP'
@@ -199,7 +198,6 @@ variable_names['WRF_NASA'][new_varname]='QNSNOW' # #/kg
 variable_names['MesoNH_Toulouse'][new_varname]='ns' # #/kg
 variable_names['WRF_PNNL'][new_varname]='QNSNOW' # #/kg
 
-
 new_varname = 'NGRA'
 variable_names['WRF_OXF'][new_varname]='QNGRAUPEL' # #/kg
 variable_names['RAMS_CSU'][new_varname]='CGP' # #/kg
@@ -222,6 +220,32 @@ variable_names['WRF_OXF'][new_varname]='NAER1' # #/kg
 variable_names['WRF_NASA'][new_varname]='NA1' # #/kg
 variable_names['WRF_PNNL'][new_varname]='QNCCN' # #/kg
 
+#Hydrometeors as CubeLists:
+new_varname = 'liquid_hydrometeors' # kg / kg
+variable_names['WRF_OXF'][new_varname]=['QCLOUD','QRAIN']
+variable_names['RAMS_CSU'][new_varname]=['RCP','RRP','RDP']
+variable_names['COSMO_KIT'][new_varname]=['QC','QR']
+variable_names['UM_LEEDS'][new_varname]=['qc','qr']
+variable_names['WRF_NASA'][new_varname]=['QCLOUD','QRAIN']
+variable_names['MesoNH_Toulouse'][new_varname]=['qc','qr']
+variable_names['WRF_PNNL'][new_varname]=['QCLOUD','QRAIN']
 
+new_varname = 'ice_hydrometeors' # kg / kg
+variable_names['WRF_OXF'][new_varname]=['QICE','QSNOW','QGRAUP']
+variable_names['RAMS_CSU'][new_varname]=['RPP','RSP','RAP','RGP','RHP']
+variable_names['COSMO_KIT'][new_varname]=['QI','QS','QG','QH']
+variable_names['UM_LEEDS'][new_varname]=['qi','qs','qg']
+variable_names['WRF_NASA'][new_varname]=['QICE']
+variable_names['MesoNH_Toulouse'][new_varname]=['qi','qs','qg']
+variable_names['WRF_PNNL'][new_varname]=['QICE','QSNOW','QGRAUP']
 
+new_varname = 'hydrometeors' # kg / kg
+variable_names['WRF_OXF'][new_varname]=variable_names['WRF_OXF']['liquid_hydrometeors']+variable_names['WRF_OXF']['ice_hydrometeors']
+variable_names['RAMS_CSU'][new_varname]=variable_names['RAMS_CSU']['liquid_hydrometeors']+variable_names['RAMS_CSU']['ice_hydrometeors']
+variable_names['COSMO_KIT'][new_varname]=variable_names['COSMO_KIT']['liquid_hydrometeors']+variable_names['COSMO_KIT']['ice_hydrometeors']
+variable_names['UM_LEEDS'][new_varname]=variable_names['UM_LEEDS']['liquid_hydrometeors']+variable_names['UM_LEEDS']['ice_hydrometeors']
+variable_names['WRF_NASA'][new_varname]=variable_names['WRF_NASA']['liquid_hydrometeors']+variable_names['WRF_NASA']['ice_hydrometeors']
+variable_names['MesoNH_Toulouse'][new_varname]=variable_names['MesoNH_Toulouse']['liquid_hydrometeors']+variable_names['MesoNH_Toulouse']['ice_hydrometeors']
+variable_names['WRF_PNNL'][new_varname]=variable_names['WRF_PNNL']['liquid_hydrometeors']+variable_names['WRF_PNNL']['ice_hydrometeors']
 
+print(variable_names)

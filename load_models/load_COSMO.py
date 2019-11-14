@@ -9,7 +9,17 @@ from copy import deepcopy
 from cf_units import Unit
 import datetime
 
-def load_COSMO(files,variable):        
+def load_COSMO(files,variable):
+    #check is variable is list or str and then either load single cube or cubelisr
+    if type(variable)==list:
+        output=iris.cube.CubeList()
+        for variable_i in variable:
+            output.append(load_COSMO_cube(files,variable_i))
+    elif type(variable)==str:
+        output=load_COSMO_cube(files,variable)
+    return output
+
+def load_COSMO_cube(files,variable):        
     
     # Test files / variables for PJM
     #files = '/avalanche/pmarin/ACPC/YELLOWSTONE/NOBAK/COSMO_C/lfff00100000.nc_5min'

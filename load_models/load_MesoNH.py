@@ -7,6 +7,7 @@ import os
 import numpy as np
 from copy import deepcopy
 from cf_units import Unit
+
 def load_concatentate(files,variable):
     cubes=iris.load(files,variable)
     for cube in cubes:
@@ -16,6 +17,16 @@ def load_concatentate(files,variable):
     return cube_out
 
 def load_MesoNH(files,variable):
+    #check is variable is list or str and then either load single cube or cubelisr
+    if type(variable)==list:
+        output=iris.cube.CubeList()
+        for variable_i in variable:
+            output.append(load_MesoNH_cube(files,variable_i))
+    elif type(variable)==str:
+        output=load_MesoNH_cube(files,variable)
+    return output
+        
+def load_MesoNH_cube(files,variable):
     from .make_geopotential_height_coord import geopotential_height_coord,geopotential_height_coord_stag
     cubes=iris.load(files)
     #Z=iris.load_cube(files,'Z')

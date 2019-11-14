@@ -21,6 +21,17 @@ def callback(cube, field, filename):
     return cube
 
 def load_UM(files,variable):
+    #check is variable is list or str and then either load single cube or cubelisr
+    if type(variable)==list:
+        output=iris.cube.CubeList()
+        for variable_i in variable:
+            output.append(load_UM_cube(files,variable_i))
+    elif type(variable)==str:
+        output=load_UM_cube(files,variable)
+    return output
+
+
+def load_UM_cube(files,variable):
     from .make_geopotential_height_coord import geopotential_height_coord,geopotential_height_coord_stag,geopotential_height_coord_short
 
     filename_aux=os.path.join(os.path.dirname(files[0]),'LMCONSTANTS')
