@@ -6,3 +6,4 @@ iris
 xarray 
 cf_units
 cartopy
+jupyter
