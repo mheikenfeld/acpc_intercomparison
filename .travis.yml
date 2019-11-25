@@ -2,22 +2,23 @@ language: python
 #sudo: false
 # choose python versions
 python:
-  - "2.7"
   - "3.6"
   - "3.7"
+  - "2.7"
+env:
+  - TEST_TARGET=unit PYTHON_TARGET=3.6
+  # - TEST_TARGET=integration
 
 install:
 
   # Install miniconda
   # -----------------
-  #
-  #- conda_version='latest'
-  - CONDA_VERSION='4.6.14'
-  - echo $TRAVIS_PYTHON_VERSION
-  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then  export CONDA_BASE="http://repo.continuum.io/miniconda/Miniconda2"; fi
-  - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; then  export CONDA_BASE="http://repo.continuum.io/miniconda/Miniconda3"; fi
-  - echo $CONDA_BASE
-  - wget "${CONDA_BASE}-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh
+  - if [[ $PYTHON_TARGET == 2* ]]; then
+      export CONDA_BASE=http://repo.continuum.io/miniconda/Miniconda2;
+    else
+      export CONDA_BASE=http://repo.continuum.io/miniconda/Miniconda3;
+    fi
+  - wget ${CONDA_BASE}-latest-Linux-x86_64.sh -O miniconda.sh;
 
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
@@ -33,8 +34,7 @@ install:
 
   # Customise the testing environment
   # ---------------------------------
-  - conda install certifi
-  - conda install -c conda-forge --quiet --file conda-requirements.txt
+  - conda install -c conda-forge --quiet --file conda_requirements.txt
   - conda install -c conda-forge --quiet pytest
   - PREFIX=$HOME/miniconda/envs/$ENV_NAME
 
@@ -43,10 +43,12 @@ install:
   - conda info -a
 
   # Install
-  #- python setup.py --quiet install
   - pip install .
+
+  # Output debug info
+  - conda list
+
 # command to run tests
 #script
 script:
-#  - if [[ $PYTHON_TARGET == 2* ]]; then        
   - pytest
