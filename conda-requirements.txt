@@ -1,0 +1,10 @@
+# Python dependencies
+numpy
+scipy
+matplotlib 
+iris 
+xarray 
+cf_units
+cartopy
+wrfcube
+ramscube
