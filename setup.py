@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='acpc_intercomparison',
-      version='1.1',
+      version='1.1.1',
       description='ACPC deep convection intercomparison setup',
       url='http://github.com/mheikenfeld/acpc_intercomparison',
       author='Max Heikenfeld',
