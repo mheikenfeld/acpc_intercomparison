@@ -247,5 +247,3 @@ variable_names['UM_LEEDS'][new_varname]=variable_names['UM_LEEDS']['liquid_hydro
 variable_names['WRF_NASA'][new_varname]=variable_names['WRF_NASA']['liquid_hydrometeors']+variable_names['WRF_NASA']['ice_hydrometeors']
 variable_names['MesoNH_Toulouse'][new_varname]=variable_names['MesoNH_Toulouse']['liquid_hydrometeors']+variable_names['MesoNH_Toulouse']['ice_hydrometeors']
 variable_names['WRF_PNNL'][new_varname]=variable_names['WRF_PNNL']['liquid_hydrometeors']+variable_names['WRF_PNNL']['ice_hydrometeors']
-
-print(variable_names)
