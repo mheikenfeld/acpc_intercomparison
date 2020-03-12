@@ -1,7 +1,8 @@
 from setuptools import setup
 
 setup(name='acpc_intercomparison',
-      version='1.1.1',
+      use_scm_version=True,
+      setup_requires=['setuptools_scm'],
       description='ACPC deep convection intercomparison setup',
       url='http://github.com/mheikenfeld/acpc_intercomparison',
       author='Max Heikenfeld',
