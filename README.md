@@ -1,7 +1,7 @@
 # acpc_intercomparison
-Setup for the ACPC Houston deep convection case model intercomparison
+Setup for the ACPC Houston deep convection case model intercomparison (www.acpcinitiative.org)
 
-Code to load data from the files submitted for the different models by the different groups in a homgenised way based on Iris cubes
+This repository conatins code to load data from the files submitted for the different models by the different groups in a homgenised way based on Iris cubes.
 
 Requirements:
-iris, matplotlib,ramscube, wrfcube, cartopy,jupyter
+iris, xarray, matplotlib,ramscube, wrfcube
