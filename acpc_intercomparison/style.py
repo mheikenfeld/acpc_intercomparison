@@ -1,3 +1,6 @@
+'''
+File collecting central information for the acpc_intercomparison package
+'''
 from collections import OrderedDict
 
 #specify colors for the models
